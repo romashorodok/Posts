@@ -7,17 +7,17 @@ assignees: ''
 
 ---
 
-##Naming functionality
+## Naming functionality
 As a logged-out user
 I want to be able to sign in to a website
 So that I can find acess my personal profile
 
-##Pre-requisites
+## Pre-requisites
 User should be registered
 
-##Description
+## Description
 Users can sign in into a website
 
-##Acceptance criteria
+## Acceptance criteria
 
-##Additional context
+## Additional context
