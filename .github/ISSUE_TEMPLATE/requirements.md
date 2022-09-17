@@ -2,16 +2,16 @@
 name: Requirements
 about: To describe the projects requirements
 title: ''
-labels: ''
+labels: User story
 assignees: ''
 
 ---
 
 ## Description
-A short description of the feature.
+A short description of the requirement.
 
 ### Prerequisites
-Any preconditions that must be met prior to the functionality being executed.
+Any prerequisites that must be met before proceeding to the requirement.
 
 ## User story
 **As a** *[type of user]*,
@@ -25,4 +25,4 @@ Any preconditions that must be met prior to the functionality being executed.
 **then** *[a set of observable outcomes should occur]*.
 
 ## Notes
-Some notes if necessary.
+Your notes.
