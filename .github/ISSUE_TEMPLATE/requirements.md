@@ -7,17 +7,25 @@ assignees: ''
 
 ---
 
-## Naming functionality
-As a logged-out user
-I want to be able to sign in to a website
-So that I can find acess my personal profile
-
-## Pre-requisites
-User should be registered
-
 ## Description
-Users can sign in into a website
+A short description of the feature.
+
+### Prerequisites
+Any preconditions that must be met prior to the functionality being executed.
+
+## User story
+**As a** *[type of user]*,
+**I want to** *[perform some task]*
+**so that I can** *[achieve some goal]*.
 
 ## Acceptance criteria
+**Scenario**: *[description]*\
+**Given that** *[some context]*,\
+**when** *[some action is carried out]*\
+**then** *[a set of observable outcomes should occur]*.
 
-## Additional context
+**Scenario**: *[description]*\
+*...*
+
+## Notes
+Some notes if necessary.
