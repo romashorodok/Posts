@@ -24,8 +24,5 @@ Any preconditions that must be met prior to the functionality being executed.
 **when** *[some action is carried out]*\
 **then** *[a set of observable outcomes should occur]*.
 
-**Scenario**: *[description]*\
-*...*
-
 ## Notes
 Some notes if necessary.
