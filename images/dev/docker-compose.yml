@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:14.5
+    environment:
+      POSTGRES_DB: "posts-db"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+    volumes:
+      - ./migration:/docker-entrypoint-initdb.d:cached
+    ports:
+      - 5433:5432
