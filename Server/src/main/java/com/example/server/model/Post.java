@@ -3,23 +3,26 @@ package com.example.server.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
 @Data
 @Entity
-public class Posts {
+@Table(name = "posts")
+public class Post {
+    private String title;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-    private String title;
+    private int id;
+
     @ManyToMany
     @JoinTable(
             name = "post_tags",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<Tags> tags;
+    private Set<Tag> tags;
     @OneToMany
     @JoinColumn(name = "post_id")
     private List<Comment> comments;
@@ -27,30 +30,37 @@ public class Posts {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    private int likeCount;
-    private String content;
+    @ManyToMany
+    @JoinTable(
+            name = "post_likes",
+            joinColumns = @JoinColumn(name="like_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id")
+    )
+    private Set<Like> likes;
 
-    public Posts() {
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    public Post() {
     }
 
-    public Posts(String id, String title, Set<Tags> tags, List<Comment> comments, String description, User user, int likeCount, String content) {
+    public Post(String title, int id, Set<Tag> tags, List<Comment> comments, String description, User user, Set<Like> likes, LocalDateTime createdAt) {
+        this.title = title;
         this.id = id;
-        this.title = title;
         this.tags = tags;
         this.comments = comments;
         this.description = description;
         this.user = user;
-        this.likeCount = likeCount;
-        this.content = content;
+        this.likes = likes;
+        this.createdAt = createdAt;
     }
 
-    public Posts(String title, Set<Tags> tags, List<Comment> comments, String description, User user, int likeCount, String content) {
+    public Post(String title, Set<Tag> tags, List<Comment> comments, String description, User user, Set<Like> likes) {
         this.title = title;
         this.tags = tags;
         this.comments = comments;
         this.description = description;
         this.user = user;
-        this.likeCount = likeCount;
-        this.content = content;
+        this.likes = likes;
     }
 }
