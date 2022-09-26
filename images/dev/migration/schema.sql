@@ -5,7 +5,7 @@
 -- Dumped from database version 14.5 (Debian 14.5-1.pgdg110+1)
 -- Dumped by pg_dump version 14.4
 
--- Started on 2022-09-26 18:52:43 EEST
+-- Started on 2022-09-26 20:57:23 EEST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,6 +21,7 @@ SET row_security = off;
 -- TOC entry 3374 (class 1262 OID 16384)
 -- Name: posts-db; Type: DATABASE; Schema: -; Owner: root
 --
+
 
 ALTER DATABASE "posts-db" OWNER TO root;
 
@@ -117,9 +118,9 @@ ALTER TABLE public.post_tags OWNER TO root;
 CREATE TABLE public.posts (
     title character varying(40)[] NOT NULL,
     id integer NOT NULL,
-    description character varying(60)[] NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    user_id integer NOT NULL
+    user_id integer NOT NULL,
+    description character varying(60) NOT NULL
 );
 
 
@@ -172,8 +173,8 @@ ALTER TABLE public.user_roles OWNER TO root;
 CREATE TABLE public.users (
     id integer NOT NULL,
     avatar_url character varying,
-    "firstName" character varying NOT NULL,
-    "lastName" character varying NOT NULL,
+    first_name character varying NOT NULL,
+    last_name character varying NOT NULL,
     password character varying(25) NOT NULL,
     email character varying(100) NOT NULL
 );
@@ -361,7 +362,7 @@ ALTER TABLE ONLY public.user_roles
     ADD CONSTRAINT user_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
--- Completed on 2022-09-26 18:52:44 EEST
+-- Completed on 2022-09-26 20:57:24 EEST
 
 --
 -- PostgreSQL database dump complete
