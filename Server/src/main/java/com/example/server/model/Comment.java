@@ -1,9 +1,14 @@
 package com.example.server.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -13,16 +18,18 @@ import java.util.Set;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
     private String content;
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
-    @OneToMany
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date createdAt;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "post_id")
-    private List<Post> posts;
+    private Post post;
 
     @ManyToMany
     @JoinTable(
@@ -35,19 +42,19 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int id, User user, String content, LocalDateTime createdAt, List<Post> posts, Set<Like> likes) {
+    public Comment(int id, User user, String content, Date createdAt, Post post, Set<Like> likes) {
         this.id = id;
         this.user = user;
         this.content = content;
         this.createdAt = createdAt;
-        this.posts = posts;
+        this.post = post;
         this.likes = likes;
     }
 
-    public Comment(User user, String content, List<Post> posts, Set<Like> likes) {
+    public Comment(User user, String content, Post post, Set<Like> likes) {
         this.user = user;
         this.content = content;
-        this.posts = posts;
+        this.post = post;
         this.likes = likes;
     }
 }

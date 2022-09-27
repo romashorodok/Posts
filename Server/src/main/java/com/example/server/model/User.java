@@ -1,5 +1,6 @@
 package com.example.server.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,9 +12,8 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @ManyToMany
+    private Integer id;
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -22,7 +22,9 @@ public class User {
     private Set<Role> role;
     private String password;
     private String email;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
     @Column(name = "avatar_url")
     private String avatarUrl;
