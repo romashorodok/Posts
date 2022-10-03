@@ -1,5 +1,7 @@
 package com.example.server.services.role.impls;
 
+import com.example.server.dto.RoleDTO;
+import com.example.server.mappers.RoleMapper;
 import com.example.server.model.Role;
 import com.example.server.repository.RoleRepository;
 import com.example.server.services.role.RoleService;
@@ -7,39 +9,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
 @Service
 public class RoleServiceImpl implements RoleService {
     @Autowired
-    RoleRepository roleRepository;
+    RoleRepository repository;
+    @Autowired
+    RoleMapper mapper;
 
     @Override
-    public Role save(Role role) {
+    public RoleDTO save(RoleDTO role) {
         if(role.getId()!=null){
             return null;
         }
-        return roleRepository.save(role);
+        return mapper.toDTO(repository.save(mapper.toEntity(new Role(), role)));
     }
 
     @Override
     public void delete(int id) {
-        roleRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     @Override
-    public Role getOne(int id) {
-        return roleRepository.findById(id).get();
+    public RoleDTO getOne(int id) {
+        return repository.findById(id).map(mapper::toDTO).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public List<Role> getAll() {
-        return roleRepository.findAll();
+    public List<RoleDTO> getAll() {
+        return repository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
 
     @Override
-    public Role update(Role role) {
-        if(role.getId()==null){
-            return null;
-        }
-        return roleRepository.save(role);
+    public RoleDTO update(RoleDTO role) {
+        return mapper.toDTO(repository.save(mapper.toEntity(repository.findById(role.getId()).orElseThrow(NoSuchElementException::new), role)));
     }
 }

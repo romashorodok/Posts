@@ -1,13 +1,14 @@
 package com.example.server.services.like;
 
-import com.example.server.model.Like;
+
+import com.example.server.dto.LikeDTO;
 
 import java.util.List;
 
 public interface LikeService {
-    Like save(Like like);
+    LikeDTO save(LikeDTO like);
     void delete(int id);
-    Like getOne(int id);
-    List<Like> getAll();
-    Like update(Like like);
+    LikeDTO getOne(int id);
+    List<LikeDTO> getAll();
+    LikeDTO update(LikeDTO like);
 }

@@ -1,5 +1,7 @@
 package com.example.server.services.tag.impls;
 
+import com.example.server.dto.TagDTO;
+import com.example.server.mappers.TagMapper;
 import com.example.server.model.Tag;
 import com.example.server.repository.TagRepository;
 import com.example.server.services.tag.TagService;
@@ -7,39 +9,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
 @Service
 public class TagServiceImpl implements TagService {
     @Autowired
-    TagRepository tagRepository;
+    TagRepository repository;
+    @Autowired
+    TagMapper mapper;
 
     @Override
-    public Tag save(Tag tag) {
+    public TagDTO save(TagDTO tag) {
         if(tag.getId()!=null){
             return null;
         }
-        return tagRepository.save(tag);
+        return mapper.toDTO(repository.save(mapper.toEntity(new Tag(), tag)));
     }
 
     @Override
     public void delete(int id) {
-        tagRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     @Override
-    public Tag getOne(int id) {
-        return tagRepository.findById(id).get();
+    public TagDTO getOne(int id) {
+        return repository.findById(id).map(mapper::toDTO).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public List<Tag> getAll() {
-        return tagRepository.findAll();
+    public List<TagDTO> getAll() {
+        return repository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
 
     @Override
-    public Tag update(Tag tag) {
-        if(tag.getId()==null){
-            return null;
-        }
-        return tagRepository.save(tag);
+    public TagDTO update(TagDTO tag) {
+        return mapper.toDTO(repository.save(mapper.toEntity(repository.findById(tag.getId()).orElseThrow(NoSuchElementException::new), tag)));
     }
 }

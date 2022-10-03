@@ -1,13 +1,13 @@
 package com.example.server.services.comment;
 
-import com.example.server.model.Comment;
+import com.example.server.dto.CommentDTO;
 
 import java.util.List;
 
 public interface CommentService {
-    Comment save(Comment comment);
+    CommentDTO save(CommentDTO comment);
     void delete(int id);
-    Comment getOne(int id);
-    List<Comment> getAll();
-    Comment update(Comment comment);
+    CommentDTO getOne(int id);
+    List<CommentDTO> getAll();
+    CommentDTO update(CommentDTO comment);
 }

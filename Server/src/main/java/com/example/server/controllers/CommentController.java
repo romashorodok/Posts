@@ -1,6 +1,6 @@
 package com.example.server.controllers;
 
-import com.example.server.model.Comment;
+import com.example.server.dto.CommentDTO;
 import com.example.server.services.comment.impls.CommentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,18 +17,18 @@ public class CommentController {
 
 
     @GetMapping("/")
-    public ResponseEntity<List<Comment>> getAllComments()  {
+    public ResponseEntity<List<CommentDTO>> getAllComments()  {
         return new ResponseEntity<>(commentService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Comment> getCommentById(@PathVariable("id") int id)  {
+    public ResponseEntity<CommentDTO> getCommentById(@PathVariable("id") int id)  {
         return new ResponseEntity<>(commentService.getOne(id), HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<Comment> saveComment(@RequestBody Comment comment)  {
-        Comment savedComment = commentService.save(comment);
+    public ResponseEntity<CommentDTO> saveComment(@RequestBody CommentDTO comment)  {
+        CommentDTO savedComment = commentService.save(comment);
         if(savedComment==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -42,11 +42,7 @@ public class CommentController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Comment> updateComment(@RequestBody Comment comment)  {
-        Comment updatedComment = commentService.update(comment);
-        if(updatedComment==null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(updatedComment, HttpStatus.OK);
+    public ResponseEntity<CommentDTO> updateComment(@RequestBody CommentDTO comment)  {
+        return new ResponseEntity<>(commentService.update(comment), HttpStatus.OK);
     }
 }

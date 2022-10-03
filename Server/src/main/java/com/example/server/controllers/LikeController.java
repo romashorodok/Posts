@@ -1,6 +1,6 @@
 package com.example.server.controllers;
 
-import com.example.server.model.Like;
+import com.example.server.dto.LikeDTO;
 import com.example.server.services.like.impls.LikeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,18 +17,18 @@ public class LikeController {
 
 
     @GetMapping("/")
-    public ResponseEntity<List<Like>> getAllLikes()  {
+    public ResponseEntity<List<LikeDTO>> getAllLikes()  {
         return new ResponseEntity<>(likeService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Like> getLikeById(@PathVariable("id") int id)  {
+    public ResponseEntity<LikeDTO> getLikeById(@PathVariable("id") int id)  {
         return new ResponseEntity<>(likeService.getOne(id), HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<Like> saveLike(@RequestBody Like like)  {
-        Like savedLike = likeService.save(like);
+    public ResponseEntity<LikeDTO> saveLike(@RequestBody LikeDTO like)  {
+        LikeDTO savedLike = likeService.save(like);
         if(savedLike==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -42,11 +42,7 @@ public class LikeController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Like> updateLike(@RequestBody Like like)  {
-        Like updatedLike = likeService.update(like);
-        if(updatedLike==null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(updatedLike, HttpStatus.OK);
+    public ResponseEntity<LikeDTO> updateLike(@RequestBody LikeDTO like)  {
+        return new ResponseEntity<>(likeService.update(like), HttpStatus.OK);
     }
 }

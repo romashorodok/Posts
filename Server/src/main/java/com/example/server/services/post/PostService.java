@@ -1,13 +1,14 @@
 package com.example.server.services.post;
 
 
-import com.example.server.model.Post;
+import com.example.server.dto.PostDTO;
+
 import java.util.List;
 
 public interface PostService {
-    Post save(Post post);
+    PostDTO save(PostDTO post);
     void delete(int id);
-    Post getOne(int id);
-    List<Post> getAll();
-    Post update(Post post);
+    PostDTO getOne(int id);
+    List<PostDTO> getAll();
+    PostDTO update(PostDTO post);
 }

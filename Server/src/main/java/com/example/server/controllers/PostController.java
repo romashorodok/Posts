@@ -1,8 +1,6 @@
 package com.example.server.controllers;
 
-import com.example.server.model.Post;
-import com.example.server.model.User;
-import com.example.server.repository.PostRepository;
+import com.example.server.dto.PostDTO;
 import com.example.server.services.post.impls.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,18 +16,18 @@ public class PostController {
     PostServiceImpl postService;
 
     @GetMapping("/")
-    public ResponseEntity<List<Post>> getAllPosts()  {
+    public ResponseEntity<List<PostDTO>> getAllPosts()  {
         return new ResponseEntity<>(postService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> gePostById(@PathVariable("id") int id)  {
+    public ResponseEntity<PostDTO> gePostById(@PathVariable("id") int id)  {
         return new ResponseEntity<>(postService.getOne(id), HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<Post> savePost(@RequestBody Post post)  {
-        Post savedPost = postService.save(post);
+    public ResponseEntity<PostDTO> savePost(@RequestBody PostDTO post)  {
+        PostDTO savedPost = postService.save(post);
         if(savedPost==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -43,12 +41,8 @@ public class PostController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Post> updatePost(@RequestBody Post post)  {
-        Post updatedPost = postService.update(post);
-        if(updatedPost==null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(updatedPost, HttpStatus.OK);
+    public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO post)  {
+        return new ResponseEntity<>(postService.update(post), HttpStatus.OK);
     }
 
 }

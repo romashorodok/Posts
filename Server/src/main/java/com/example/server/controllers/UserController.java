@@ -1,6 +1,6 @@
 package com.example.server.controllers;
 
-import com.example.server.model.User;
+import com.example.server.dto.UserDTO;
 import com.example.server.services.user.impls.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,18 +17,18 @@ public class UserController {
 
 
     @GetMapping("/")
-    public ResponseEntity<List<User>> getAllUsers()  {
+    public ResponseEntity<List<UserDTO>> getAllUsers()  {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> geUserById(@PathVariable("id") int id)  {
+    public ResponseEntity<UserDTO> geUserById(@PathVariable("id") int id)  {
         return new ResponseEntity<>(userService.getOne(id), HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<User> saveUser(@RequestBody User user)  {
-        User savedUser = userService.save(user);
+    public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO user)  {
+        UserDTO savedUser = userService.save(user);
         if(savedUser==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -42,11 +42,7 @@ public class UserController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<User> updateUser(@RequestBody User user)  {
-        User updatedUser = userService.update(user);
-        if(updatedUser==null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO user)  {
+        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
     }
 }

@@ -1,13 +1,13 @@
 package com.example.server.services.user;
 
-import com.example.server.model.User;
+import com.example.server.dto.UserDTO;
 
 import java.util.List;
 
 public interface UserService {
-    User save(User user);
+    UserDTO save(UserDTO user);
     void delete(int id);
-    User getOne(int id);
-    List<User> getAll();
-    User update(User user);
+    UserDTO getOne(int id);
+    List<UserDTO> getAll();
+    UserDTO update(UserDTO user);
 }
