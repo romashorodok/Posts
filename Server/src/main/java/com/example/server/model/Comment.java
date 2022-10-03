@@ -26,10 +26,7 @@ public class Comment {
     @Column(name = "created_at")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY )
-    @JoinColumn(name = "post_id")
-    private Post post;
+
 
     @ManyToMany
     @JoinTable(
@@ -42,19 +39,17 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int id, User user, String content, Date createdAt, Post post, Set<Like> likes) {
+    public Comment(int id, User user, String content, Date createdAt, Set<Like> likes) {
         this.id = id;
         this.user = user;
         this.content = content;
         this.createdAt = createdAt;
-        this.post = post;
         this.likes = likes;
     }
 
-    public Comment(User user, String content, Post post, Set<Like> likes) {
+    public Comment(User user, String content, Set<Like> likes) {
         this.user = user;
         this.content = content;
-        this.post = post;
         this.likes = likes;
     }
 }
