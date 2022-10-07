@@ -46,4 +46,8 @@ public class PostServiceImpl implements PostService {
     public PostDTO update(PostDTO post) {
         return mapper.toDTO(repository.save(mapper.toEntity(repository.findById(post.getId()).orElseThrow(NoSuchElementException::new), post)));
     }
+
+    public List<PostDTO> getRecentlyPosts(){
+        return repository.findAllByOrderByCreatedAtDesc().stream().map(mapper::toDTO).collect(Collectors.toList());
+    }
 }
