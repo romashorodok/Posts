@@ -17,8 +17,6 @@ export function Home({ posts }: Props) {
   );
 }
 
-export default Home;
-
 export function getServerSideProps(): GetServerSidePropsResult<Props> {
   const serverPostsResult = {
     data: [{ name: "How to craft..." }, { name: "How to build..." }],
@@ -30,3 +28,5 @@ export function getServerSideProps(): GetServerSidePropsResult<Props> {
     },
   };
 }
+
+export default Home;
