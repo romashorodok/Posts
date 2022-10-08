@@ -3,13 +3,9 @@ package com.example.server.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -27,6 +23,9 @@ public class Comment {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @ManyToMany
     @JoinTable(
@@ -39,17 +38,20 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int id, User user, String content, Date createdAt, Set<Like> likes) {
+    public Comment(int id, User user, String content, Date createdAt, Set<Like> likes, Post post) {
         this.id = id;
         this.user = user;
         this.content = content;
         this.createdAt = createdAt;
         this.likes = likes;
+        this.post = post;
     }
 
-    public Comment(User user, String content, Set<Like> likes) {
+    public Comment(User user, String content, Set<Like> likes, Post post) {
         this.user = user;
         this.content = content;
         this.likes = likes;
+        this.post = post;
+
     }
 }

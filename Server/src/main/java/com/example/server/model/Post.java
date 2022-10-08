@@ -25,6 +25,7 @@ public class Post {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private Set<Tag> tags;
+
     @OneToMany
     @JoinColumn(name = "post_id")
     private List<Comment> comments;
