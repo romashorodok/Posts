@@ -1,4 +1,5 @@
 import { GetServerSidePropsResult } from "next";
+import Styles from "~/Styles/pages/index.module.scss";
 import LandingLayout from "~/layouts/LandingLayout";
 
 interface Props {
@@ -8,11 +9,17 @@ interface Props {
 export function Home({ posts }: Props) {
   return (
     <LandingLayout>
-      {posts?.map((post: { name: string }, index) => (
-        <div key={index}>
-          <h1>{post.name}</h1>
+      <div
+        className={`${Styles.landing_background} flex flex-col justify-center`}
+      >
+        <div className={`${Styles.landing_text} text-4xl font-bold`}>
+          <p>Runo - це все, що потрібно</p>
+          <p>вам для комфортного</p>
+          <p>проводження часу</p>
         </div>
-      ))}
+      </div>
+
+      <div className={`${Styles.landing_recent_posts}`}></div>
     </LandingLayout>
   );
 }
