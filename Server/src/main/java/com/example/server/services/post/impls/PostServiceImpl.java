@@ -1,12 +1,18 @@
 package com.example.server.services.post.impls;
 
 import com.example.server.dto.PostDTO;
+import com.example.server.dto.RecentPostDTO;
 import com.example.server.mappers.PostMapper;
 import com.example.server.model.Post;
+import com.example.server.model.Tag;
 import com.example.server.repository.PostRepository;
 import com.example.server.services.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -41,13 +47,15 @@ public class PostServiceImpl implements PostService {
     public List<PostDTO> getAll() {
         return repository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
-
     @Override
     public PostDTO update(PostDTO post) {
         return mapper.toDTO(repository.save(mapper.toEntity(repository.findById(post.getId()).orElseThrow(NoSuchElementException::new), post)));
     }
 
-    public List<PostDTO> getRecentlyPosts(){
-        return repository.findAllByOrderByCreatedAtDesc().stream().map(mapper::toDTO).collect(Collectors.toList());
+    public List<RecentPostDTO> getRecentPosts(String tag, int size){
+        return repository.findAllRecentByTags(tag, PageRequest.of(0, size)).stream().map(mapper::toRecentPostDTO).collect(Collectors.toList());
     }
+
+
+
 }

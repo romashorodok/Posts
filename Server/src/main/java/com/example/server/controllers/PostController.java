@@ -1,6 +1,7 @@
 package com.example.server.controllers;
 
 import com.example.server.dto.PostDTO;
+import com.example.server.dto.RecentPostDTO;
 import com.example.server.services.post.impls.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,11 @@ public class PostController {
     @PutMapping("/")
     public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO post)  {
         return new ResponseEntity<>(postService.update(post), HttpStatus.OK);
+    }
+
+    @GetMapping("/recent-posts")
+    public ResponseEntity<List<RecentPostDTO>> getRecentPosts(@RequestParam String tag, int size){
+            return new ResponseEntity<>(postService.getRecentPosts(tag, size), HttpStatus.OK);
     }
 
 }

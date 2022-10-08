@@ -2,6 +2,7 @@ package com.example.server.mappers;
 
 
 import com.example.server.dto.PostDTO;
+import com.example.server.dto.RecentPostDTO;
 import com.example.server.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,6 +52,16 @@ public class PostMapper {
         dto.setDescription(post.getDescription());
         dto.setUser(userMapper.toDTO(post.getUser()));
         dto.setLikes(post.getLikes().stream().map(elem -> likeMapper.toDTO(elem)).collect(Collectors.toSet()));
+        dto.setCreatedAt(post.getCreatedAt());
+        return dto;
+    }
+
+    public RecentPostDTO toRecentPostDTO(Post post){
+        RecentPostDTO dto = new RecentPostDTO();
+        dto.setId(post.getId());
+        dto.setDescription(post.getDescription());
+        dto.setTitle(post.getTitle());
+        dto.setTags(post.getTags().stream().map(elem -> tagMapper.toDTO(elem)).collect(Collectors.toSet()));
         dto.setCreatedAt(post.getCreatedAt());
         return dto;
     }
