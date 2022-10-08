@@ -1,0 +1,9 @@
+@use "~/styles/vars" as var;
+
+@mixin padding {
+  padding: 5rem 5%;
+}
+
+@mixin selected {
+  color: var.$active;
+}

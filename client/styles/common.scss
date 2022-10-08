@@ -1,0 +1,9 @@
+@use "~/styles/vars" as var;
+
+.bg-minor {
+  color: var.$minor;
+}
+
+.bg-support {
+  color: var.$support;
+}

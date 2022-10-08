@@ -1,3 +1,5 @@
+@use "~/styles/mixins" as mixin;
+
 .landing_background {
   position: relative;
   background-image: url("/assets/landing-background.jpg");
@@ -23,4 +25,18 @@
 
 .landing_recent_posts {
     min-height: 100vh;
+    @include mixin.padding;
+}
+
+.landing_category {
+    cursor: pointer;
+    user-select: none;
+}
+
+.landing_category:hover {
+    @include mixin.selected;
+}
+
+.landing_category__selected {
+    @include mixin.selected;
 }
