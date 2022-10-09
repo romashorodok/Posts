@@ -1,0 +1,26 @@
+.header_container {
+  position: fixed;
+  background-color: rgb(0, 0, 0, 0.5);
+  padding: 20px 5%;
+  width: 100%;
+  z-index: 100;
+
+  & section {
+    margin-right: 10px;
+  }
+
+  a,
+  h1,
+  button {
+    color: white;
+  }
+}
+
+.navigation_container {
+  display: flex;
+
+  & section:not(:last-child):after {
+    content: "|";
+    color: white;
+  }
+}
