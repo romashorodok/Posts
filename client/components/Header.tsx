@@ -36,7 +36,7 @@ export function Header({
           {socialLinks?.map((link: Link, index) => (
             <a href={link.path} key={index}>
               <Image
-                className={Styles.social_icon}
+                className="social_icon"
                 src={link.icon}
                 alt={link.name}
                 width={25}

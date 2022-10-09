@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from "~/components/Footer";
 import { Header, Link } from "~/components/Header";
 
 const logoName = "RUNO";
@@ -24,6 +25,7 @@ export function LandingLayout({
     <>
       <Header logoName={logoName} links={links} socialLinks={socialLinks} />
       {children}
+      <Footer socialLinks={socialLinks} />
     </>
   );
 }
