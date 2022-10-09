@@ -1,7 +1,6 @@
 package com.example.server.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,9 +28,9 @@ public class Comment {
 
     @ManyToMany
     @JoinTable(
-            name = "post_likes",
-            joinColumns = @JoinColumn(name="like_id"),
-            inverseJoinColumns = @JoinColumn(name = "comment_id")
+            name = "comment_likes",
+            joinColumns = @JoinColumn(name="comment_id"),
+            inverseJoinColumns = @JoinColumn(name = "like_id")
     )
     private Set<Like> likes;
 

@@ -50,5 +50,8 @@ public class PostController {
     public ResponseEntity<List<RecentPostDTO>> getRecentPosts(@RequestParam String tag, int size){
             return new ResponseEntity<>(postService.getRecentPosts(tag, size), HttpStatus.OK);
     }
-
+    @GetMapping("/most-liked")
+    public ResponseEntity<RecentPostDTO> getMostLikePost(){
+        return new ResponseEntity<>(postService.getMostLikedPost(), HttpStatus.OK);
+    }
 }
