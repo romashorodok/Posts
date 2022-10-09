@@ -1,0 +1,9 @@
+.card_container {
+  width: 23.4%;
+}
+
+.card_content {
+  & * {
+    margin: 7px 0;
+  }
+}

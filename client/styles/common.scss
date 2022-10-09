@@ -1,0 +1,18 @@
+@use "~/styles/vars" as var;
+
+.bg-minor {
+  color: var.$minor;
+}
+
+.bg-support {
+  color: var.$support;
+}
+
+.fg-normal {
+  color: var.$normal;
+}
+
+.social_icon {
+  filter: invert(100%) sepia(3%) saturate(2%) hue-rotate(332deg)
+    brightness(114%) contrast(101%);
+}

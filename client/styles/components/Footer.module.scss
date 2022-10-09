@@ -1,0 +1,55 @@
+@use "~/styles/responsive" as responsive;
+@use "~/styles/mixins" as mixin;
+@use "~/styles/vars" as var;
+
+.contact_container {
+  display: grid;
+  padding: 5em 5%;
+
+  @include responsive.desktop {
+    grid-template-columns: repeat(4, 25%);
+  }
+
+  @include responsive.tablet {
+    grid-template-columns: repeat(2, 50%);
+    gap: 40px;
+  }
+
+  @include responsive.mobile {
+    text-align: center;
+    grid-template-columns: repeat(1, 100%);
+    gap: 20px;
+  }
+}
+
+.contact_heading_title {
+  margin-bottom: 10px !important;
+}
+
+.contact_selected {
+  user-select: none;
+  cursor: pointer;
+}
+
+.contact_selected:hover {
+  @include mixin.selected;
+}
+
+.section_container {
+  & * {
+    margin: 5px 0;
+  }
+}
+
+.subfooter_container {
+  @include mixin.padding;
+  padding-top: 2.25rem !important;
+  padding-bottom: 2.25rem !important;
+  background-color: var.$second;
+}
+
+.social_icons_container {
+  @include responsive.mobile {
+    justify-content: center;
+  }
+}
