@@ -11,8 +11,15 @@ export function Card({
   children,
 }: React.PropsWithChildren<Props>) {
   return (
-    <div className={`${Styles.card_container}`}>
-      <Image className="rounded" src={image} width={310} height={280} />
+    <div>
+      <Image
+        className="rounded"
+        src={image}
+        width="100%"
+        height="100%"
+        layout="responsive"
+        objectFit="contain"
+      />
       <div className={Styles.card_content}>{children}</div>
     </div>
   );

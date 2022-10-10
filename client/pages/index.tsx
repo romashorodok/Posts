@@ -61,9 +61,7 @@ export function Home({ posts, categories, featuredPost }: Props) {
           <a className={Styles.landing_category}>Переглянути все</a>
         </div>
 
-        <div
-          className={`${Styles.landing_post_cards} flex flex-row flex-wrap gap-5`}
-        >
+        <div className={`${Styles.landing_post_cards} grid`}>
           {posts.map((post: Post) => (
             <Card>
               <p className="text-xs bg-minor">{post.created_at}</p>
