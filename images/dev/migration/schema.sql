@@ -5,13 +5,14 @@
 -- Dumped from database version 14.5 (Debian 14.5-1.pgdg110+1)
 -- Dumped by pg_dump version 14.4
 
--- Started on 2022-09-27 14:24:50 EEST
+-- Started on 2022-10-10 14:46:42 EEST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
@@ -135,12 +136,13 @@ CREATE TABLE public.posts (
     created_at timestamp without time zone NOT NULL,
     user_id integer NOT NULL,
     description character varying NOT NULL,
-    title character varying(40) NOT NULL
+    title character varying(40) NOT NULL,
+    image_url character varying NOT NULL
 );
 
 
 --
--- TOC entry 217 (class 1259 OID 16407)
+-- TOC entry 217 (class 1259 OID 16409)
 -- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -155,7 +157,7 @@ ALTER TABLE public.posts ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- TOC entry 218 (class 1259 OID 16408)
+-- TOC entry 218 (class 1259 OID 16410)
 -- Name: roles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -166,7 +168,7 @@ CREATE TABLE public.roles (
 
 
 --
--- TOC entry 219 (class 1259 OID 16411)
+-- TOC entry 219 (class 1259 OID 16413)
 -- Name: roles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -181,7 +183,7 @@ ALTER TABLE public.roles ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- TOC entry 220 (class 1259 OID 16412)
+-- TOC entry 220 (class 1259 OID 16414)
 -- Name: tags; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -192,7 +194,7 @@ CREATE TABLE public.tags (
 
 
 --
--- TOC entry 224 (class 1259 OID 16500)
+-- TOC entry 221 (class 1259 OID 16417)
 -- Name: tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -207,7 +209,7 @@ ALTER TABLE public.tags ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- TOC entry 221 (class 1259 OID 16415)
+-- TOC entry 222 (class 1259 OID 16418)
 -- Name: user_roles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -218,7 +220,7 @@ CREATE TABLE public.user_roles (
 
 
 --
--- TOC entry 222 (class 1259 OID 16418)
+-- TOC entry 223 (class 1259 OID 16421)
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -233,7 +235,7 @@ CREATE TABLE public.users (
 
 
 --
--- TOC entry 223 (class 1259 OID 16423)
+-- TOC entry 224 (class 1259 OID 16426)
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -248,7 +250,7 @@ ALTER TABLE public.users ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- TOC entry 3209 (class 2606 OID 16425)
+-- TOC entry 3209 (class 2606 OID 16428)
 -- Name: comment_likes comment_likes_like_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -257,7 +259,7 @@ ALTER TABLE ONLY public.comment_likes
 
 
 --
--- TOC entry 3211 (class 2606 OID 16427)
+-- TOC entry 3211 (class 2606 OID 16430)
 -- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -266,7 +268,7 @@ ALTER TABLE ONLY public.comments
 
 
 --
--- TOC entry 3213 (class 2606 OID 16429)
+-- TOC entry 3213 (class 2606 OID 16432)
 -- Name: likes likes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -275,7 +277,7 @@ ALTER TABLE ONLY public.likes
 
 
 --
--- TOC entry 3215 (class 2606 OID 16431)
+-- TOC entry 3215 (class 2606 OID 16434)
 -- Name: post_likes post_likes_like_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -284,7 +286,7 @@ ALTER TABLE ONLY public.post_likes
 
 
 --
--- TOC entry 3217 (class 2606 OID 16433)
+-- TOC entry 3217 (class 2606 OID 16436)
 -- Name: posts posts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -293,7 +295,7 @@ ALTER TABLE ONLY public.posts
 
 
 --
--- TOC entry 3219 (class 2606 OID 16435)
+-- TOC entry 3219 (class 2606 OID 16438)
 -- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -302,7 +304,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- TOC entry 3221 (class 2606 OID 16437)
+-- TOC entry 3221 (class 2606 OID 16440)
 -- Name: tags tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -311,7 +313,7 @@ ALTER TABLE ONLY public.tags
 
 
 --
--- TOC entry 3223 (class 2606 OID 16439)
+-- TOC entry 3223 (class 2606 OID 16442)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -320,7 +322,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3224 (class 2606 OID 16440)
+-- TOC entry 3224 (class 2606 OID 16443)
 -- Name: comment_likes comment_likes_comment_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -329,7 +331,7 @@ ALTER TABLE ONLY public.comment_likes
 
 
 --
--- TOC entry 3225 (class 2606 OID 16445)
+-- TOC entry 3225 (class 2606 OID 16448)
 -- Name: comment_likes comment_likes_like_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -338,7 +340,7 @@ ALTER TABLE ONLY public.comment_likes
 
 
 --
--- TOC entry 3226 (class 2606 OID 16450)
+-- TOC entry 3226 (class 2606 OID 16453)
 -- Name: comments comments_post_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -347,7 +349,7 @@ ALTER TABLE ONLY public.comments
 
 
 --
--- TOC entry 3227 (class 2606 OID 16455)
+-- TOC entry 3227 (class 2606 OID 16458)
 -- Name: comments comments_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -356,7 +358,7 @@ ALTER TABLE ONLY public.comments
 
 
 --
--- TOC entry 3228 (class 2606 OID 16460)
+-- TOC entry 3228 (class 2606 OID 16463)
 -- Name: likes likes_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -365,7 +367,7 @@ ALTER TABLE ONLY public.likes
 
 
 --
--- TOC entry 3229 (class 2606 OID 16465)
+-- TOC entry 3229 (class 2606 OID 16468)
 -- Name: post_likes post_likes_like_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -374,7 +376,7 @@ ALTER TABLE ONLY public.post_likes
 
 
 --
--- TOC entry 3230 (class 2606 OID 16470)
+-- TOC entry 3230 (class 2606 OID 16473)
 -- Name: post_likes post_likes_post_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -383,7 +385,7 @@ ALTER TABLE ONLY public.post_likes
 
 
 --
--- TOC entry 3231 (class 2606 OID 16475)
+-- TOC entry 3231 (class 2606 OID 16478)
 -- Name: post_tags post_tags_post_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -392,7 +394,7 @@ ALTER TABLE ONLY public.post_tags
 
 
 --
--- TOC entry 3232 (class 2606 OID 16480)
+-- TOC entry 3232 (class 2606 OID 16483)
 -- Name: post_tags post_tags_tag_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -401,7 +403,7 @@ ALTER TABLE ONLY public.post_tags
 
 
 --
--- TOC entry 3233 (class 2606 OID 16485)
+-- TOC entry 3233 (class 2606 OID 16488)
 -- Name: posts posts_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -410,7 +412,7 @@ ALTER TABLE ONLY public.posts
 
 
 --
--- TOC entry 3234 (class 2606 OID 16490)
+-- TOC entry 3234 (class 2606 OID 16493)
 -- Name: user_roles user_roles_role_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -419,7 +421,7 @@ ALTER TABLE ONLY public.user_roles
 
 
 --
--- TOC entry 3235 (class 2606 OID 16495)
+-- TOC entry 3235 (class 2606 OID 16498)
 -- Name: user_roles user_roles_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -427,7 +429,7 @@ ALTER TABLE ONLY public.user_roles
     ADD CONSTRAINT user_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
--- Completed on 2022-09-27 14:24:50 EEST
+-- Completed on 2022-10-10 14:46:42 EEST
 
 --
 -- PostgreSQL database dump complete
