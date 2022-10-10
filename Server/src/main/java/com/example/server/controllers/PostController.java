@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api/post")
 public class PostController {
     @Autowired
     PostServiceImpl postService;
@@ -46,8 +46,8 @@ public class PostController {
         return new ResponseEntity<>(postService.update(post), HttpStatus.OK);
     }
 
-    @GetMapping("/recent-posts")
-    public ResponseEntity<List<RecentPostDTO>> getRecentPosts(@RequestParam String tag, int size){
+    @GetMapping("/recent")
+    public ResponseEntity<List<RecentPostDTO>> getRecentPosts(@RequestParam String tag,@RequestParam int size){
             return new ResponseEntity<>(postService.getRecentPosts(tag, size), HttpStatus.OK);
     }
     @GetMapping("/most-liked")

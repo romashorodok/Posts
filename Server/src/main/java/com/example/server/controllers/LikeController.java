@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/likes")
+@RequestMapping("/api/like")
 public class LikeController {
     @Autowired
     LikeServiceImpl likeService;

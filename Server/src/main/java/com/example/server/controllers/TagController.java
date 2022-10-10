@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tags")
+@RequestMapping("/api/tag")
 public class TagController {
     @Autowired
     TagServiceImpl tagService;
