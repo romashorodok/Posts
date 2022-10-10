@@ -30,6 +30,7 @@ public class PostMapper {
         dto.setUser(userMapper.toDTO(post.getUser()));
         dto.setLikes(post.getLikes().stream().map(elem -> likeMapper.toDTO(elem)).collect(Collectors.toSet()));
         dto.setCreatedAt(post.getCreatedAt());
+        dto.setImageUrl(post.getImageUrl());
         return dto;
     }
 
@@ -41,6 +42,7 @@ public class PostMapper {
         post.setUser(userMapper.toEntity(new User(), dto.getUser()));
         post.setLikes(dto.getLikes().stream().map(elem -> likeMapper.toEntity(new Like(), elem)).collect(Collectors.toSet()));
         post.setCreatedAt(dto.getCreatedAt());
+        post.setImageUrl(dto.getImageUrl());
         return post;
     }
 
@@ -53,6 +55,7 @@ public class PostMapper {
         dto.setUser(userMapper.toDTO(post.getUser()));
         dto.setLikes(post.getLikes().stream().map(elem -> likeMapper.toDTO(elem)).collect(Collectors.toSet()));
         dto.setCreatedAt(post.getCreatedAt());
+        dto.setImageUrl(post.getImageUrl());
         return dto;
     }
 
@@ -63,6 +66,7 @@ public class PostMapper {
         dto.setTitle(post.getTitle());
         dto.setTags(post.getTags().stream().map(elem -> tagMapper.toDTO(elem)).collect(Collectors.toSet()));
         dto.setCreatedAt(post.getCreatedAt());
+        dto.setImageUrl(post.getImageUrl());
         return dto;
     }
 }

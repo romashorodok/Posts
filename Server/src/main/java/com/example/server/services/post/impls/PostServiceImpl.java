@@ -28,7 +28,7 @@ public class PostServiceImpl implements PostService {
         if(post.getId()!=null){
             return null;
         }
-        return mapper.toDTO(repository.save(mapper.toEntity(new Post(), post)));
+        return mapper.toCommonPostDTO(repository.save(mapper.toEntity(new Post(), post)));
     }
 
     @Override

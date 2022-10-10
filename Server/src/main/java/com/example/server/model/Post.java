@@ -42,12 +42,14 @@ public class Post {
     @Column(name = "created_at")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
+    @Column(name = "image_url")
+    private String imageUrl;
 
 
     public Post() {
     }
 
-    public Post(String title, int id, Set<Tag> tags, List<Comment> comments, String description, User user, Set<Like> likes, Date createdAt) {
+    public Post(String title, int id, Set<Tag> tags, List<Comment> comments, String description, User user, Set<Like> likes, Date createdAt, String imageUrl) {
         this.title = title;
         this.id = id;
         this.tags = tags;
@@ -56,14 +58,16 @@ public class Post {
         this.user = user;
         this.likes = likes;
         this.createdAt = createdAt;
+        this.imageUrl = imageUrl;
     }
 
-    public Post(String title, Set<Tag> tags, List<Comment> comments, String description, User user, Set<Like> likes) {
+    public Post(String title, Set<Tag> tags, List<Comment> comments, String description, User user, Set<Like> likes, String imageUrl) {
         this.title = title;
         this.tags = tags;
         this.comments = comments;
         this.description = description;
         this.user = user;
         this.likes = likes;
+        this.imageUrl = imageUrl;
     }
 }
