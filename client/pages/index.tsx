@@ -1,10 +1,11 @@
 import React from "react";
-import { GetServerSidePropsResult } from "next";
+import { GetServerSideProps } from "next";
 import Styles from "~/Styles/pages/index.module.scss";
 import LandingLayout from "~/layouts/LandingLayout";
 import Card from "~/components/Card";
+import axios from "axios";
 
-type Category = {
+type Tag = {
   name: string;
 };
 
@@ -13,18 +14,37 @@ type Post = {
   created_at: string;
   description: string;
 
-  // TODO: Add image support
   image?: string;
 };
 
 interface Props {
   posts: Array<Post>;
-  categories: Array<Category>;
+  tags: Array<Tag>;
   featuredPost: Post;
 }
 
-export function Home({ posts, categories, featuredPost }: Props) {
-  const [selectedCategory, setSelectedCategory] = React.useState(0);
+export function Home({ posts, tags, featuredPost }: Props) {
+  const [selectedTag, setSelectedTag] = React.useState<number>(0);
+  const [_posts, setPosts] = React.useState(posts);
+
+  const featuredPostBackground = React.useMemo(
+    () =>
+      featuredPost.image
+        ? { backgroundImage: `url(${featuredPost.image})` }
+        : { background: "grey" },
+
+    [featuredPost]
+  );
+
+  React.useEffect(() => {
+    (async () => {
+      const tag = tags[selectedTag];
+      const { data: posts } = await axios.get(
+        `/post/recent?tag=${tag.name}&size=8`
+      );
+      setPosts(posts);
+    })();
+  }, [selectedTag]);
 
   return (
     <LandingLayout>
@@ -43,15 +63,13 @@ export function Home({ posts, categories, featuredPost }: Props) {
 
         <div className="flex flex-row justify-between flex-wrap mb-10 bg-support">
           <ul className="flex flex-row flex-wrap gap-4">
-            {categories.map((category: Category, index) => (
+            {tags.map((category: Tag, index) => (
               <li
                 key={index}
                 className={`${
-                  index === selectedCategory
-                    ? Styles.landing_category__selected
-                    : ""
+                  index === selectedTag ? Styles.landing_category__selected : ""
                 } ${Styles.landing_category}`}
-                onClick={() => setSelectedCategory(index)}
+                onClick={() => setSelectedTag(index)}
               >
                 {category.name}
               </li>
@@ -62,7 +80,7 @@ export function Home({ posts, categories, featuredPost }: Props) {
         </div>
 
         <div className={`${Styles.landing_post_cards} grid`}>
-          {posts.map((post: Post) => (
+          {_posts.map((post: Post) => (
             <Card>
               <p className="text-xs bg-minor">{post.created_at}</p>
               <p className="text-lg font-bold">{post.title}</p>
@@ -74,7 +92,7 @@ export function Home({ posts, categories, featuredPost }: Props) {
 
       <section
         className={`${Styles.landing_featured_post} relative`}
-        style={{ backgroundImage: `url(${featuredPost.image})` }}
+        style={featuredPostBackground}
       >
         <div
           className={`${Styles.landing_featured_post_text} flex flex-col items-center justify-center absolute fg-normal`}
@@ -92,85 +110,18 @@ export function Home({ posts, categories, featuredPost }: Props) {
   );
 }
 
-export function getServerSideProps(): GetServerSidePropsResult<Props> {
-  const serverPostsResult = {
-    data: [
-      {
-        title: "Моя мрія відвідати Париж цього року",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-        created_at: "04.10.2022",
-      },
-      {
-        title: "Моя мрія відвідати Париж цього року",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-        created_at: "04.10.2022",
-      },
-      {
-        title: "Моя мрія відвідати Париж цього року",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-        created_at: "04.10.2022",
-      },
-      {
-        title: "Моя мрія відвідати Париж цього року",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-        created_at: "04.10.2022",
-      },
-      {
-        title: "Моя мрія відвідати Париж цього року",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-        created_at: "04.10.2022",
-      },
-      {
-        title: "Моя мрія відвідати Париж цього року",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-        created_at: "04.10.2022",
-      },
-      {
-        title: "Моя мрія відвідати Париж цього року",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-        created_at: "04.10.2022",
-      },
-      {
-        title: "Моя мрія відвідати Париж цього року",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-        created_at: "04.10.2022",
-      },
-    ],
-  };
-  const serverCategoriesResult = {
-    data: [
-      { name: "Всі" },
-      { name: "Пригоди" },
-      { name: "Подорож" },
-      { name: "Мода" },
-      { name: "Технології" },
-      { name: "Наука" },
-    ],
-  };
-
-  const serverFeaturedPostResult = {
-    title: "Моя мрія відвідати Париж цього року",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-    created_at: "04.10.2022",
-    image: "/assets/featured_mock.jpg",
-  };
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
+  const { data: posts } = await axios.get("/post/");
+  const { data: tags }: { data: Array<Tag> } = await axios.get("/tag/");
+  const { data: featuredPost } = await axios.get("/post/most-liked/");
 
   return {
     props: {
-      posts: serverPostsResult.data,
-      categories: serverCategoriesResult.data,
-      featuredPost: serverFeaturedPostResult,
+      posts,
+      tags,
+      featuredPost,
     },
   };
-}
+};
 
 export default Home;
