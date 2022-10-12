@@ -11,10 +11,10 @@ type Tag = {
 
 type Post = {
   title: string;
-  created_at: string;
+  createdAt: string;
   description: string;
 
-  image?: string;
+  imageUrl?: string;
 };
 
 interface Props {
@@ -26,11 +26,10 @@ interface Props {
 export function Home({ posts, tags, featuredPost }: Props) {
   const [selectedTag, setSelectedTag] = React.useState<number>(0);
   const [_posts, setPosts] = React.useState(posts);
-
   const featuredPostBackground = React.useMemo(
     () =>
-      featuredPost.image
-        ? { backgroundImage: `url(${featuredPost.image})` }
+      featuredPost.imageUrl
+        ? { backgroundImage: `url(${featuredPost.imageUrl})` }
         : { background: "grey" },
 
     [featuredPost]
@@ -81,8 +80,8 @@ export function Home({ posts, tags, featuredPost }: Props) {
 
         <div className={`${Styles.landing_post_cards} grid`}>
           {_posts.map((post: Post) => (
-            <Card>
-              <p className="text-xs bg-minor">{post.created_at}</p>
+            <Card image={post.imageUrl}>
+              <p className="text-xs bg-minor">{new Date(post.createdAt).toDateString()}</p>
               <p className="text-lg font-bold">{post.title}</p>
               <p className="text-xs bg-minor">{post.description}</p>
             </Card>
@@ -103,7 +102,7 @@ export function Home({ posts, tags, featuredPost }: Props) {
           >
             {featuredPost.description}
           </p>
-          <p>{featuredPost.created_at}</p>
+          <p>{new Date(featuredPost.createdAt).toDateString()}</p>
         </div>
       </section>
     </LandingLayout>
@@ -114,7 +113,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
   const { data: posts } = await axios.get("/post/");
   const { data: tags }: { data: Array<Tag> } = await axios.get("/tag/");
   const { data: featuredPost } = await axios.get("/post/most-liked/");
-
+  tags.unshift({name: "all"})
   return {
     props: {
       posts,
