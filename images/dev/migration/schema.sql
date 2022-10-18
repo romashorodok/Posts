@@ -79,6 +79,19 @@ ALTER TABLE public.comments ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
+-- TOC entry 226 (class 1259 OID 16515)
+-- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.hibernate_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
 -- TOC entry 212 (class 1259 OID 16394)
 -- Name: likes; Type: TABLE; Schema: public; Owner: -
 --
@@ -153,6 +166,19 @@ ALTER TABLE public.posts ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
     NO MINVALUE
     NO MAXVALUE
     CACHE 1
+);
+
+
+--
+-- TOC entry 225 (class 1259 OID 16503)
+-- Name: refreshtoken; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.refreshtoken (
+    id integer NOT NULL,
+    user_id integer,
+    token character varying NOT NULL,
+    expiry_date date NOT NULL
 );
 
 
@@ -250,7 +276,16 @@ ALTER TABLE public.users ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- TOC entry 3209 (class 2606 OID 16428)
+-- TOC entry 3230 (class 2606 OID 16509)
+-- Name: refreshtoken Refreshtoken_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.refreshtoken
+    ADD CONSTRAINT "Refreshtoken_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3214 (class 2606 OID 16428)
 -- Name: comment_likes comment_likes_like_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -259,7 +294,7 @@ ALTER TABLE ONLY public.comment_likes
 
 
 --
--- TOC entry 3211 (class 2606 OID 16430)
+-- TOC entry 3216 (class 2606 OID 16430)
 -- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -268,7 +303,7 @@ ALTER TABLE ONLY public.comments
 
 
 --
--- TOC entry 3213 (class 2606 OID 16432)
+-- TOC entry 3218 (class 2606 OID 16432)
 -- Name: likes likes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -277,7 +312,7 @@ ALTER TABLE ONLY public.likes
 
 
 --
--- TOC entry 3215 (class 2606 OID 16434)
+-- TOC entry 3220 (class 2606 OID 16434)
 -- Name: post_likes post_likes_like_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -286,7 +321,7 @@ ALTER TABLE ONLY public.post_likes
 
 
 --
--- TOC entry 3217 (class 2606 OID 16436)
+-- TOC entry 3222 (class 2606 OID 16436)
 -- Name: posts posts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -295,7 +330,7 @@ ALTER TABLE ONLY public.posts
 
 
 --
--- TOC entry 3219 (class 2606 OID 16438)
+-- TOC entry 3224 (class 2606 OID 16438)
 -- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -304,7 +339,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- TOC entry 3221 (class 2606 OID 16440)
+-- TOC entry 3226 (class 2606 OID 16440)
 -- Name: tags tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 

@@ -5,8 +5,11 @@ import com.example.server.services.user.impls.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -14,7 +17,6 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserServiceImpl userService;
-
 
     @GetMapping("/")
     public ResponseEntity<List<UserDTO>> getAllUsers()  {
