@@ -5,25 +5,7 @@
 -- Dumped from database version 14.5 (Debian 14.5-1.pgdg110+1)
 -- Dumped by pg_dump version 14.4
 
--- Started on 2022-10-10 14:46:42 EEST
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- TOC entry 3380 (class 1262 OID 16384)
--- Name: posts-db; Type: DATABASE; Schema: -; Owner: -
---
-
-\connect -reuse-previous=on "dbname='posts-db'"
+-- Started on 2022-10-18 21:54:59
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -76,6 +58,19 @@ ALTER TABLE public.comments ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
     NO MAXVALUE
     CACHE 1
 );
+
+
+--
+-- TOC entry 226 (class 1259 OID 16515)
+-- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.hibernate_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -157,6 +152,19 @@ ALTER TABLE public.posts ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
+-- TOC entry 225 (class 1259 OID 16503)
+-- Name: refreshtoken; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.refreshtoken (
+    id integer NOT NULL,
+    user_id integer,
+    token character varying NOT NULL,
+    expiry_date date NOT NULL
+);
+
+
+--
 -- TOC entry 218 (class 1259 OID 16410)
 -- Name: roles; Type: TABLE; Schema: public; Owner: -
 --
@@ -229,7 +237,7 @@ CREATE TABLE public.users (
     avatar_url character varying,
     first_name character varying NOT NULL,
     last_name character varying NOT NULL,
-    password character varying(25) NOT NULL,
+    password character varying NOT NULL,
     email character varying(100) NOT NULL
 );
 
@@ -250,7 +258,16 @@ ALTER TABLE public.users ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- TOC entry 3209 (class 2606 OID 16428)
+-- TOC entry 3230 (class 2606 OID 16509)
+-- Name: refreshtoken Refreshtoken_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.refreshtoken
+    ADD CONSTRAINT "Refreshtoken_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3214 (class 2606 OID 16428)
 -- Name: comment_likes comment_likes_like_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -259,7 +276,7 @@ ALTER TABLE ONLY public.comment_likes
 
 
 --
--- TOC entry 3211 (class 2606 OID 16430)
+-- TOC entry 3216 (class 2606 OID 16430)
 -- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -268,7 +285,7 @@ ALTER TABLE ONLY public.comments
 
 
 --
--- TOC entry 3213 (class 2606 OID 16432)
+-- TOC entry 3218 (class 2606 OID 16432)
 -- Name: likes likes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -277,7 +294,7 @@ ALTER TABLE ONLY public.likes
 
 
 --
--- TOC entry 3215 (class 2606 OID 16434)
+-- TOC entry 3220 (class 2606 OID 16434)
 -- Name: post_likes post_likes_like_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -286,7 +303,7 @@ ALTER TABLE ONLY public.post_likes
 
 
 --
--- TOC entry 3217 (class 2606 OID 16436)
+-- TOC entry 3222 (class 2606 OID 16436)
 -- Name: posts posts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -295,7 +312,7 @@ ALTER TABLE ONLY public.posts
 
 
 --
--- TOC entry 3219 (class 2606 OID 16438)
+-- TOC entry 3224 (class 2606 OID 16438)
 -- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -304,7 +321,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- TOC entry 3221 (class 2606 OID 16440)
+-- TOC entry 3226 (class 2606 OID 16440)
 -- Name: tags tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -313,7 +330,7 @@ ALTER TABLE ONLY public.tags
 
 
 --
--- TOC entry 3223 (class 2606 OID 16442)
+-- TOC entry 3228 (class 2606 OID 16442)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -322,7 +339,16 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3224 (class 2606 OID 16443)
+-- TOC entry 3243 (class 2606 OID 16510)
+-- Name: refreshtoken Refreshtoken_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.refreshtoken
+    ADD CONSTRAINT "Refreshtoken_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 3231 (class 2606 OID 16443)
 -- Name: comment_likes comment_likes_comment_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -331,7 +357,7 @@ ALTER TABLE ONLY public.comment_likes
 
 
 --
--- TOC entry 3225 (class 2606 OID 16448)
+-- TOC entry 3232 (class 2606 OID 16448)
 -- Name: comment_likes comment_likes_like_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -340,7 +366,7 @@ ALTER TABLE ONLY public.comment_likes
 
 
 --
--- TOC entry 3226 (class 2606 OID 16453)
+-- TOC entry 3233 (class 2606 OID 16453)
 -- Name: comments comments_post_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -349,7 +375,7 @@ ALTER TABLE ONLY public.comments
 
 
 --
--- TOC entry 3227 (class 2606 OID 16458)
+-- TOC entry 3234 (class 2606 OID 16458)
 -- Name: comments comments_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -358,7 +384,7 @@ ALTER TABLE ONLY public.comments
 
 
 --
--- TOC entry 3228 (class 2606 OID 16463)
+-- TOC entry 3235 (class 2606 OID 16463)
 -- Name: likes likes_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -367,7 +393,7 @@ ALTER TABLE ONLY public.likes
 
 
 --
--- TOC entry 3229 (class 2606 OID 16468)
+-- TOC entry 3236 (class 2606 OID 16468)
 -- Name: post_likes post_likes_like_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -376,7 +402,7 @@ ALTER TABLE ONLY public.post_likes
 
 
 --
--- TOC entry 3230 (class 2606 OID 16473)
+-- TOC entry 3237 (class 2606 OID 16473)
 -- Name: post_likes post_likes_post_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -385,7 +411,7 @@ ALTER TABLE ONLY public.post_likes
 
 
 --
--- TOC entry 3231 (class 2606 OID 16478)
+-- TOC entry 3238 (class 2606 OID 16478)
 -- Name: post_tags post_tags_post_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -394,7 +420,7 @@ ALTER TABLE ONLY public.post_tags
 
 
 --
--- TOC entry 3232 (class 2606 OID 16483)
+-- TOC entry 3239 (class 2606 OID 16483)
 -- Name: post_tags post_tags_tag_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -403,7 +429,7 @@ ALTER TABLE ONLY public.post_tags
 
 
 --
--- TOC entry 3233 (class 2606 OID 16488)
+-- TOC entry 3240 (class 2606 OID 16488)
 -- Name: posts posts_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -412,7 +438,7 @@ ALTER TABLE ONLY public.posts
 
 
 --
--- TOC entry 3234 (class 2606 OID 16493)
+-- TOC entry 3241 (class 2606 OID 16493)
 -- Name: user_roles user_roles_role_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -421,7 +447,7 @@ ALTER TABLE ONLY public.user_roles
 
 
 --
--- TOC entry 3235 (class 2606 OID 16498)
+-- TOC entry 3242 (class 2606 OID 16498)
 -- Name: user_roles user_roles_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -429,7 +455,7 @@ ALTER TABLE ONLY public.user_roles
     ADD CONSTRAINT user_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
--- Completed on 2022-10-10 14:46:42 EEST
+-- Completed on 2022-10-18 21:55:00
 
 --
 -- PostgreSQL database dump complete

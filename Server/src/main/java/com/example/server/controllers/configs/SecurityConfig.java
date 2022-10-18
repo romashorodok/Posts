@@ -1,3 +1,4 @@
+
 package com.example.server.controllers.configs;
 
 import org.springframework.context.annotation.Configuration;
