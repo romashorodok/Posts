@@ -1,6 +1,7 @@
 package com.example.server.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ public class UserDTO {
 
     private Integer id;
     private Set<RoleDTO> role;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String email;
 

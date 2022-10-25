@@ -16,7 +16,6 @@ public class UserMapper {
         UserDTO dto = new UserDTO();
         dto.setId(user.getId());
         dto.setRole(user.getRole().stream().map(elem -> roleMapper.toDTO(elem)).collect(Collectors.toSet()));
-        dto.setPassword(user.getPassword());
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
