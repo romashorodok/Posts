@@ -12,18 +12,22 @@ interface Props {
   logoName: string;
   links: Array<Link>;
   socialLinks: Array<Link>;
+  float?: boolean;
 }
 
 export function Header({
   links,
   socialLinks,
   logoName,
+  float = true,
 }: Props): React.ReactElement {
   return (
     <header
-      className={`${Styles.header_container} flex flex-row justify-between`}
+      className={`${Styles.header_container} ${
+        float ? "fixed" : "static"
+      } flex flex-row justify-between`}
     >
-      <h1>{logoName}</h1>
+      <h1 className="text-base">{logoName}</h1>
       <div className={`${Styles.navigation_container} flex flex-row`}>
         <section className="flex gap-4">
           {links?.map((link: Link, index) => (

@@ -1,0 +1,23 @@
+@use "~/styles/responsive" as responsive;
+@use "~/styles/vars" as var;
+
+@mixin editor_width {
+  width: 865px;
+}
+
+.editor_container {
+  @include editor_width();
+  margin: 20px auto;
+  background: var.$normal;
+}
+
+.editor_padding {
+  padding: 15px;
+}
+
+.editor_toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var.$normal;
+}
