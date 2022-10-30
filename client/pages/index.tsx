@@ -9,7 +9,9 @@ type Tag = {
   name: string;
 };
 
-type Post = {
+export type Post = {
+  id?: number;
+
   title: string;
   createdAt: string;
   description: string;
