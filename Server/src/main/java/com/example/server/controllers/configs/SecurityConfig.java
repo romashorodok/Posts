@@ -1,5 +1,5 @@
 
-package com.example.server.controllers.configs;
+/*package com.example.server.controllers.configs;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -17,4 +17,4 @@ public class SecurityConfig extends WebMvcConfigurerAdapter {
                 .allowedHeaders("*")
                 .allowedMethods("*");
     }
-}
+}*/
