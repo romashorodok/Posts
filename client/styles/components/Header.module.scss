@@ -1,9 +1,10 @@
 .header_container {
-  position: fixed;
+  // position: fixed;
   background-color: rgb(0, 0, 0, 0.5);
   padding: 20px 5%;
   width: 100%;
   z-index: 100;
+  top: 0;
 
   & section {
     margin-right: 10px;

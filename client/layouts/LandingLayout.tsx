@@ -2,16 +2,16 @@ import React from "react";
 import Footer from "~/components/Footer";
 import { Header, Link } from "~/components/Header";
 
-const logoName = "RUNO";
+export const logoName = "RUNO";
 
-const links: Array<Link> = [
+export const links: Array<Link> = [
   { name: "Головна", path: "" },
   { name: "Статті", path: "" },
   { name: "Контакти", path: "" },
   { name: "Профіль", path: "" },
 ];
 
-const socialLinks: Array<Link> = [
+export const socialLinks: Array<Link> = [
   { icon: "/assets/facebook.svg", path: "Facebook" },
   { icon: "/assets/twitter.svg", path: "Twitter" },
   { icon: "/assets/facebook.svg", path: "Youtube" },

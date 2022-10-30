@@ -1,0 +1,6 @@
+@use "~/styles/vars" as var;
+
+.editor_layout {
+  min-height: 100vh;
+  background: var.$minor;
+}
