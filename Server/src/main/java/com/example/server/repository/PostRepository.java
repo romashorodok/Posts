@@ -14,6 +14,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findAllRecentByTags(@Param("tag") String tag, Pageable page);
     @Query(value = "select * from posts where id=(select p.id from posts p LEFT JOIN post_likes pl ON p.id=pl.post_id group by id order by count(like_id) DESC limit 1)", nativeQuery = true)
     Post findMostLiked();
-
+    List<Post> findByTitleContainingIgnoreCase(String title);
 
 }

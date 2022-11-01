@@ -53,11 +53,13 @@ public class PostServiceImpl implements PostService {
     public List<RecentPostDTO> getRecentPosts(String tag, int size){
         return repository.findAllRecentByTags(tag, PageRequest.of(0, size)).stream().map(mapper::toRecentPostDTO).collect(Collectors.toList());
     }
-
     public RecentPostDTO getMostLikedPost(){
         return mapper.toRecentPostDTO(repository.findMostLiked());
     }
 
+    public List<PostDTO> getByUsername(String title){
+        return repository.findByTitleContainingIgnoreCase(title).stream().map(mapper::toDTO).collect(Collectors.toList());
 
+    }
 
 }

@@ -22,8 +22,13 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostDTO> gePostById(@PathVariable("id") int id)  {
+    public ResponseEntity<PostDTO> getPostById(@PathVariable("id") int id)  {
         return new ResponseEntity<>(postService.getOne(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<PostDTO>> getByUsername(@RequestParam("title") String title){
+        return new ResponseEntity<>(postService.getByUsername(title), HttpStatus.OK);
     }
 
     @PostMapping("/")
