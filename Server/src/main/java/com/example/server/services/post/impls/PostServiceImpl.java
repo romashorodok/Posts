@@ -68,8 +68,8 @@ public class PostServiceImpl implements PostService {
         return repository.findByTag(tag).stream().map(mapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<RecentPostDTO> getPostByPageListed(String tag, int page, int size){
-        return repository.findAllRecentByTags(tag, PageRequest.of(page, size)).stream().map(mapper::toRecentPostDTO)
+    public List<PostDTO> getPostByPageListed(int page, int size){
+        return repository.findAll(PageRequest.of(page, size)).stream().map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
 }

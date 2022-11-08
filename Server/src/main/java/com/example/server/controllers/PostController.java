@@ -69,7 +69,7 @@ public class PostController {
     }
 
     @GetMapping("/paging")
-    public ResponseEntity<List<RecentPostDTO>> getPageableAsList(@RequestParam String tag, @RequestParam Integer page, @RequestParam Integer size){
-        return new ResponseEntity<>(postService.getPostByPageListed(tag, page, size), HttpStatus.OK);
+    public ResponseEntity<List<PostDTO>> getPageableAsList( @RequestParam Integer page, @RequestParam Integer size){
+        return new ResponseEntity<>(postService.getPostByPageListed(page, size), HttpStatus.OK);
     }
 }
