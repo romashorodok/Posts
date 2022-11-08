@@ -16,4 +16,9 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     Post findMostLiked();
     List<Post> findByTitleContainingIgnoreCase(String title);
 
+   // @Query(value = "select * from posts where id=(select p.id from posts p LEFT JOIN post_likes pl ON p.id=pl.post_id group by id order by count(like_id) DESC)", nativeQuery = true)
+    @Query("select p from Post p order by size(p.likes) DESC")
+    List<Post> sortByLikes();
+    @Query("select distinct p from Post p left join p.tags tags where (:tag='all' or tags.name = :tag)")
+    List<Post> findByTag(String tag);
 }

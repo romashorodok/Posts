@@ -61,5 +61,11 @@ public class PostServiceImpl implements PostService {
         return repository.findByTitleContainingIgnoreCase(title).stream().map(mapper::toDTO).collect(Collectors.toList());
 
     }
-
+    public List<PostDTO> getAllOrderedByLikes(){
+        return repository.sortByLikes().stream().map(mapper::toDTO).collect(Collectors.toList());
+        }
+    public List<PostDTO> findByTag(String tag){
+        return repository.findByTag(tag).stream().map(mapper::toDTO).collect(Collectors.toList());
+    }
 }
+

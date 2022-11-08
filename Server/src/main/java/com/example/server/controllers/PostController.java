@@ -30,6 +30,15 @@ public class PostController {
     public ResponseEntity<List<PostDTO>> getByUsername(@RequestParam("title") String title){
         return new ResponseEntity<>(postService.getByUsername(title), HttpStatus.OK);
     }
+    @GetMapping("/sort-by-likes")
+    public ResponseEntity<List<PostDTO>> sortByLikes(){
+        return new ResponseEntity<>(postService.getAllOrderedByLikes(), HttpStatus.OK);
+    }
+
+    @GetMapping("/find-by-tag")
+    public ResponseEntity<List<PostDTO>> findByTag(@RequestParam("tag") String tag){
+        return new ResponseEntity<>(postService.findByTag(tag), HttpStatus.OK);
+    }
 
     @PostMapping("/")
     public ResponseEntity<PostDTO> savePost(@RequestBody PostDTO post)  {
