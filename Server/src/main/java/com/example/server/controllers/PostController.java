@@ -20,7 +20,6 @@ public class PostController {
     public ResponseEntity<List<PostDTO>> getAllPosts()  {
         return new ResponseEntity<>(postService.getAll(), HttpStatus.OK);
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<PostDTO> getPostById(@PathVariable("id") int id)  {
         return new ResponseEntity<>(postService.getOne(id), HttpStatus.OK);
@@ -67,5 +66,10 @@ public class PostController {
     @GetMapping("/most-liked")
     public ResponseEntity<RecentPostDTO> getMostLikePost(){
         return new ResponseEntity<>(postService.getMostLikedPost(), HttpStatus.OK);
+    }
+
+    @GetMapping("/paging")
+    public ResponseEntity<List<RecentPostDTO>> getPageableAsList(@RequestParam String tag, @RequestParam Integer page, @RequestParam Integer size){
+        return new ResponseEntity<>(postService.getPostByPageListed(tag, page, size), HttpStatus.OK);
     }
 }
