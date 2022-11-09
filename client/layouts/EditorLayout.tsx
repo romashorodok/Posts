@@ -1,6 +1,6 @@
 import React from "react";
 import Styles from "~/styles/layouts/editor.module.scss";
-import Header from "~/components/Header";
+import Header from "~/components/base/Header";
 import { links, logoName, socialLinks } from "./LandingLayout";
 
 export function EditorLayout({

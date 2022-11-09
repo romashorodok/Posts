@@ -1,6 +1,6 @@
 import React from "react";
-import Footer from "~/components/Footer";
-import { Header, Link } from "~/components/Header";
+import Footer from "~/components/base/Footer";
+import { Header, Link } from "~/components/base/Header";
 
 export const logoName = "RUNO";
 
