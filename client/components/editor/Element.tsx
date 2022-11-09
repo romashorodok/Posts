@@ -56,8 +56,6 @@ function Element({
         </ol>
       );
     default:
-      // style.fontSize = element.size ? element.size : TEXT_SIZES["default"];
-
       return (
         <p style={style} {...attributes}>
           {children}
