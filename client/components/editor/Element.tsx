@@ -1,13 +1,13 @@
 import { CSSProperties } from "react";
 import { RenderElementProps } from "slate-react";
-import Types from "~/common/editor/types";
+import { CustomElement } from "~/common/editor/types.d";
 
 type Modify<T, R extends Partial<Record<keyof T, any>>> = Omit<T, keyof R> & R;
 
 type ExtendedRenderElementProps = Modify<
   RenderElementProps,
   {
-    element: Partial<Types.CustomElement & { align: string }>;
+    element: Partial<CustomElement & { align: string }>;
   }
 >;
 
@@ -15,7 +15,7 @@ function Element({
   attributes,
   children,
   element,
-}: ExtendedRenderElementProps) {
+}: ExtendedRenderElementProps): React.ReactElement {
   const style = { textAlign: element.align } as CSSProperties;
 
   switch (element.type) {
@@ -56,6 +56,8 @@ function Element({
         </ol>
       );
     default:
+      // style.fontSize = element.size ? element.size : TEXT_SIZES["default"];
+
       return (
         <p style={style} {...attributes}>
           {children}
