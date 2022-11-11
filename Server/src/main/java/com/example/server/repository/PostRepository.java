@@ -12,8 +12,13 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query("select p from Post p left join fetch p.tags tags where (:tag='all' or tags.name = :tag) order by p.createdAt DESC")
     List<Post> findAllRecentByTags(@Param("tag") String tag, Pageable page);
-    @Query("select p from Post p where size(p.likes) = (select max(size(p.likes)) from Post p) ")
+    @Query(value = "select * from posts where id=(select p.id from posts p LEFT JOIN post_likes pl ON p.id=pl.post_id group by id order by count(like_id) DESC limit 1)", nativeQuery = true)
     Post findMostLiked();
+    List<Post> findByTitleContainingIgnoreCase(String title);
 
-
+   // @Query(value = "select * from posts where id=(select p.id from posts p LEFT JOIN post_likes pl ON p.id=pl.post_id group by id order by count(like_id) DESC)", nativeQuery = true)
+    @Query("select p from Post p order by size(p.likes) DESC")
+    List<Post> sortByLikes();
+    @Query("select distinct p from Post p left join p.tags tags where (:tag='all' or tags.name = :tag)")
+    List<Post> findByTag(String tag);
 }

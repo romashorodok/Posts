@@ -2,14 +2,16 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import Styles from "~/Styles/pages/index.module.scss";
 import LandingLayout from "~/layouts/LandingLayout";
-import Card from "~/components/Card";
+import Card from "~/components/base/Card";
 import axios from "axios";
 
 type Tag = {
   name: string;
 };
 
-type Post = {
+export type Post = {
+  id?: number;
+
   title: string;
   createdAt: string;
   description: string;

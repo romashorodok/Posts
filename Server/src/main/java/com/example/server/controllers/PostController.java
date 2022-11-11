@@ -23,10 +23,25 @@ public class PostController {
     public ResponseEntity<List<ViewPostDTO>> getAllPosts()  {
         return new ResponseEntity<>(postService.getAll(), HttpStatus.OK);
     }
-
+    
     @GetMapping("/{id}")
-    public ResponseEntity<ViewPostDTO> gePostById(@PathVariable("id") int id)  {
+    public ResponseEntity<ViewPostDTO> getPostById(@PathVariable("id") int id)  {
         return new ResponseEntity<>(postService.getOne(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<PostDTO>> getByUsername(@RequestParam("title") String title){
+        return new ResponseEntity<>(postService.getByUsername(title), HttpStatus.OK);
+    }
+    
+    @GetMapping("/sort-by-likes")
+    public ResponseEntity<List<PostDTO>> sortByLikes(){
+        return new ResponseEntity<>(postService.getAllOrderedByLikes(), HttpStatus.OK);
+    }
+
+    @GetMapping("/find-by-tag")
+    public ResponseEntity<List<PostDTO>> findByTag(@RequestParam("tag") String tag){
+        return new ResponseEntity<>(postService.findByTag(tag), HttpStatus.OK);
     }
 
     @PostMapping(value = "/")
@@ -56,5 +71,10 @@ public class PostController {
     @GetMapping("/most-liked")
     public ResponseEntity<RecentPostDTO> getMostLikePost() throws IOException {
         return new ResponseEntity<>(postService.getMostLikedPost(), HttpStatus.OK);
+    }
+
+    @GetMapping("/paging")
+    public ResponseEntity<List<PostDTO>> getPageableAsList( @RequestParam Integer page, @RequestParam Integer size){
+        return new ResponseEntity<>(postService.getPostByPageListed(page, size), HttpStatus.OK);
     }
 }

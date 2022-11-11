@@ -103,6 +103,20 @@ public class PostServiceImpl implements PostService {
         return mapper.toRecentPostDTO(repository.findMostLiked());
     }
 
+    public List<PostDTO> getByUsername(String title){
+        return repository.findByTitleContainingIgnoreCase(title).stream().map(mapper::toDTO).collect(Collectors.toList());
 
+    }
+    public List<PostDTO> getAllOrderedByLikes(){
+        return repository.sortByLikes().stream().map(mapper::toDTO).collect(Collectors.toList());
+        }
+    public List<PostDTO> findByTag(String tag){
+        return repository.findByTag(tag).stream().map(mapper::toDTO).collect(Collectors.toList());
+    }
 
+    public List<PostDTO> getPostByPageListed(int page, int size){
+        return repository.findAll(PageRequest.of(page, size)).stream().map(mapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }
+

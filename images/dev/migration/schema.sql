@@ -289,8 +289,8 @@ ALTER TABLE ONLY public.refreshtoken
 -- Name: comment_likes comment_likes_like_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.comment_likes
-    ADD CONSTRAINT comment_likes_like_id_key UNIQUE (like_id);
+-- ALTER TABLE ONLY public.comment_likes
+--     ADD CONSTRAINT comment_likes_like_id_key UNIQUE (like_id);
 
 
 --
@@ -316,8 +316,8 @@ ALTER TABLE ONLY public.likes
 -- Name: post_likes post_likes_like_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.post_likes
-    ADD CONSTRAINT post_likes_like_id_key UNIQUE (like_id);
+-- ALTER TABLE ONLY public.post_likes
+--     ADD CONSTRAINT post_likes_like_id_key UNIQUE (like_id);
 
 
 --
