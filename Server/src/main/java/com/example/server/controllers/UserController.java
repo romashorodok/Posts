@@ -1,15 +1,14 @@
 package com.example.server.controllers;
 
+import com.example.server.dto.ProfileDTO;
 import com.example.server.dto.UserDTO;
 import com.example.server.services.user.impls.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.security.RolesAllowed;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,15 +21,22 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAllUsers()  {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> geUserById(@PathVariable("id") int id)  {
-        return new ResponseEntity<>(userService.getOne(id), HttpStatus.OK);
+    @GetMapping("/profile")
+    public ResponseEntity<List<ProfileDTO>> getAllProfiles()  {
+        return new ResponseEntity<>(userService.getProfilesAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") int id)  {
+        return new ResponseEntity<>(userService.getOne(id), HttpStatus.OK);
+    }
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<ProfileDTO> getProfileById(@PathVariable("id") int id)  {
+        return new ResponseEntity<>(userService.getOneProfileById(id), HttpStatus.OK);
+    }
     @PostMapping("/")
-    public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO user)  {
-        UserDTO savedUser = userService.save(user);
+    public ResponseEntity<UserDTO> saveUser(@RequestPart UserDTO user, @RequestPart MultipartFile file) throws IOException {
+        UserDTO savedUser = userService.save(user, file);
         if(savedUser==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -38,13 +44,13 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") int id)  {
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") int id) throws IOException {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO user)  {
-        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
+    public ResponseEntity<UserDTO> updateUser(@RequestPart UserDTO user, @RequestPart MultipartFile file) throws IOException {
+        return new ResponseEntity<>(userService.update(user, file), HttpStatus.OK);
     }
 }

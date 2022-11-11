@@ -2,12 +2,15 @@ package com.example.server.controllers;
 
 import com.example.server.dto.PostDTO;
 import com.example.server.dto.RecentPostDTO;
+import com.example.server.dto.ViewPostDTO;
 import com.example.server.services.post.impls.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -17,18 +20,18 @@ public class PostController {
     PostServiceImpl postService;
 
     @GetMapping("/")
-    public ResponseEntity<List<PostDTO>> getAllPosts()  {
+    public ResponseEntity<List<ViewPostDTO>> getAllPosts()  {
         return new ResponseEntity<>(postService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostDTO> gePostById(@PathVariable("id") int id)  {
+    public ResponseEntity<ViewPostDTO> gePostById(@PathVariable("id") int id)  {
         return new ResponseEntity<>(postService.getOne(id), HttpStatus.OK);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<PostDTO> savePost(@RequestBody PostDTO post)  {
-        PostDTO savedPost = postService.save(post);
+    @PostMapping(value = "/")
+    public ResponseEntity<PostDTO> savePost(@RequestPart PostDTO post, @RequestParam MultipartFile file) throws IOException {
+        PostDTO savedPost = postService.save(post, file);
         if(savedPost==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -36,14 +39,14 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") int id)  {
+    public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") int id) throws IOException {
         postService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/")
-    public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO post)  {
-        return new ResponseEntity<>(postService.update(post), HttpStatus.OK);
+    public ResponseEntity<PostDTO> updatePost(@RequestPart PostDTO post, @RequestParam MultipartFile file) throws IOException {
+        return new ResponseEntity<>(postService.update(post, file), HttpStatus.OK);
     }
 
     @GetMapping("/recent")
@@ -51,7 +54,7 @@ public class PostController {
             return new ResponseEntity<>(postService.getRecentPosts(tag, size), HttpStatus.OK);
     }
     @GetMapping("/most-liked")
-    public ResponseEntity<RecentPostDTO> getMostLikePost(){
+    public ResponseEntity<RecentPostDTO> getMostLikePost() throws IOException {
         return new ResponseEntity<>(postService.getMostLikedPost(), HttpStatus.OK);
     }
 }

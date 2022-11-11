@@ -1,13 +1,10 @@
 package com.example.server.controllers.configs.security.jwt;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 import com.example.server.services.user.impls.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.*;
 
