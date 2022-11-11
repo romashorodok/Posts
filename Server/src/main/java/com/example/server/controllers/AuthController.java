@@ -1,11 +1,7 @@
 package com.example.server.controllers;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-
-
 import com.example.server.controllers.configs.security.jwt.JwtUtils;
 import com.example.server.dto.UserDTO;
 import com.example.server.exception.TokenRefreshException;

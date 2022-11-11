@@ -1,13 +1,13 @@
 package com.example.server.dto;
 
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.util.*;
-
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 @Data
-public class PostDTO {
+public class ViewPostDTO {
+
     private Integer id;
     private String title;
 
@@ -19,15 +19,14 @@ public class PostDTO {
     private UserDTO user;
 
     private Set<LikeDTO> likes;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Date createdAt;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String imageUrl;
 
-    public PostDTO() {
+    private Date createdAt;
+    private byte[] image;
+
+    public ViewPostDTO() {
     }
 
-    public PostDTO(String title, int id, Set<TagDTO> tags, List<CommentDTO> comments, String description, UserDTO user, Set<LikeDTO> likes, Date createdAt, String imageUrl) {
+    public ViewPostDTO(String title, int id, Set<TagDTO> tags, List<CommentDTO> comments, String description, UserDTO user, Set<LikeDTO> likes, Date createdAt, byte[] image) {
         this.title = title;
         this.id = id;
         this.tags = tags;
@@ -36,16 +35,16 @@ public class PostDTO {
         this.user = user;
         this.likes = likes;
         this.createdAt = createdAt;
-        this.imageUrl = imageUrl;
+        this.image = image;
     }
 
-    public PostDTO(String title, Set<TagDTO> tags, List<CommentDTO> comments, String description, UserDTO user, Set<LikeDTO> likes, String imageUrl) {
+    public ViewPostDTO(String title, Set<TagDTO> tags, List<CommentDTO> comments, String description, UserDTO user, Set<LikeDTO> likes, byte[] image) {
         this.title = title;
         this.tags = tags;
         this.comments = comments;
         this.description = description;
         this.user = user;
         this.likes = likes;
-        this.imageUrl = imageUrl;
+        this.image = image;
     }
 }
