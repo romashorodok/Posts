@@ -6,15 +6,14 @@ interface Props {
   image?: string;
 }
 
-export function Card({
-  image = "/assets/post_mock.jpg",
-  children,
-}: React.PropsWithChildren<Props>) {
+const defaultImage = "/assets/post_mock.jpg";
+
+export function Card({ image, children }: React.PropsWithChildren<Props>) {
   return (
     <div>
       <Image
         className="rounded"
-        src={image}
+        src={image ? image : defaultImage}
         width="100%"
         height="100%"
         layout="responsive"

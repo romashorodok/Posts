@@ -11,38 +11,28 @@ import { CustomElement, CustomText } from "~/common/editor/types.d";
 
 import EditorRenderer from "~/components/editor/EditorRenderer";
 import ToolBarButtons from "~/components/editor/ToolBarButtons";
+import { parseText } from "~/common/editor/transforms";
 
-function parseText({ post }: { post: Post }): Descendant[] {
-  try {
-    return JSON.parse(post.description);
-  } catch {
-    console.error("Cannot parse post description");
-    return [
-      {
-        type: "paragraph",
-        children: [{ text: "Cannot parse description, enter content again." }],
-      },
-    ];
-  }
+function putText(post: Post, text: Descendant[], file) {
+  const postJson = JSON.stringify({
+    ...post,
+    description: JSON.stringify(text),
+  });
+  const payload = new FormData();
+  payload.append("post", new Blob([postJson], { type: "application/json" }));
+  payload.append("file", new Blob([file], { type: "image/*" }));
+
+  if (post.id) axios.put("/post/", payload).catch(console.error);
 }
 
-function putText(post: Post, text: Descendant[]) {
-  const plainText = JSON.stringify(text);
-
-  if (post.id)
-    axios
-      .put("/post/", { ...post, description: plainText })
-      .catch(console.error);
-}
-
-function Index({ post }: { post: Post }) {
+function Index({ post, file }: { post: Post; file }) {
   const [element, setElement] = useState<CustomElement>();
   const [leaf, setLeaf] = useState<CustomText>();
 
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-  const text = useMemo<Descendant[]>(() => parseText({ post }), [post]);
+  const text = useMemo<Descendant[]>(() => parseText(post), [post]);
 
-  const onChangeText = (text: Descendant[]) => putText(post, text);
+  const onChangeText = (text: Descendant[]) => putText(post, text, file);
 
   const onCursorChange = () => {
     React.useEffect(() => {
@@ -83,9 +73,21 @@ export const getServerSideProps: GetServerSideProps<{ post: Post }> = async ({
 }) => {
   const { post: id } = params;
   const { data: post } = await axios.get(`/post/${id}`);
+
+  const fs = require("fs");
+  const path = require("path");
+
+  const filePath = path.resolve(
+    __dirname,
+    "../../../../public/assets/photo_2022-10-12_12-21-08.jpg"
+  );
+
+  const file = fs.readFileSync(filePath, { encoding: "base64" });
+
   return {
     props: {
       post,
+      file
     },
   };
 };
