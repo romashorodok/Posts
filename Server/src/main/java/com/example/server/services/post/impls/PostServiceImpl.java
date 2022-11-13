@@ -1,23 +1,22 @@
 package com.example.server.services.post.impls;
 
 import com.example.server.dto.PostDTO;
-import com.example.server.dto.RecentPostDTO;
 import com.example.server.dto.ViewPostDTO;
 import com.example.server.mappers.PostMapper;
 import com.example.server.model.Post;
-import com.example.server.model.User;
 import com.example.server.repository.PostRepository;
 import com.example.server.services.post.PostService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -71,36 +70,43 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO update(PostDTO post, MultipartFile file) throws IOException {
+    public PostDTO update(PostDTO post, @Nullable MultipartFile file) throws IOException {
         Post post1 = repository.findById(post.getId()).orElseThrow(NoSuchElementException::new);
-        if(!file.isEmpty()){
+
+        if(file != null){
             if(!Objects.equals(post1.getImageUrl(), "")){
-            Files.deleteIfExists(
+                Files.deleteIfExists(
                     Paths.get("Server/src/main/resources/images/" + post1.getImageUrl()));
             }
+
             String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-            Files.write(Paths.get( "Server/src/main/resources/images/" + filename), file.getBytes());
+            Path path = Paths.get("Server/src/main/resources/images/".concat(filename));
+
+            Files.createDirectories(path.getParent());
+            Files.write(path, file.getBytes());
+
             post.setImageUrl(filename);
         }
         else{
             post.setImageUrl(post1.getImageUrl());
         }
+
         post.setCreatedAt(post1.getCreatedAt());
         return mapper.toDTO(repository.save(mapper.toEntity(post1, post)));
     }
 
-    public List<RecentPostDTO> getRecentPosts(String tag, int size){
+    public List<ViewPostDTO> getRecentPosts(String tag, int size){
         return repository.findAllRecentByTags(tag, PageRequest.of(0, size)).stream().map(elem -> {
             try {
-                return mapper.toRecentPostDTO(elem);
+                return mapper.toViewPostDTO(elem);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }).collect(Collectors.toList());
     }
 
-    public RecentPostDTO getMostLikedPost() throws IOException {
-        return mapper.toRecentPostDTO(repository.findMostLiked());
+    public ViewPostDTO getMostLikedPost() throws IOException {
+        return mapper.toViewPostDTO(repository.findMostLiked());
     }
 
     public List<PostDTO> getByUsername(String title){

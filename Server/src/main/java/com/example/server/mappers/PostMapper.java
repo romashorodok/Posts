@@ -7,6 +7,7 @@ import com.example.server.dto.ViewPostDTO;
 import com.example.server.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Base64Utils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -49,7 +50,7 @@ public class PostMapper {
         dto.setCreatedAt(post.getCreatedAt());
         if(!post.getImageUrl().equals("")){
             if(Files.exists(Paths.get("Server/src/main/resources/images/" + post.getImageUrl()))){
-                dto.setImage(Files.readAllBytes(Paths.get("Server/src/main/resources/images/" + post.getImageUrl())));
+                dto.setImage(Base64Utils.decode(Files.readAllBytes(Paths.get("Server/src/main/resources/images/" + post.getImageUrl()))));
             }
         }
         return dto;
