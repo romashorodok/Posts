@@ -3,7 +3,7 @@ import Styles from "~/styles/pages/editor.module.scss";
 import { withReact } from "slate-react";
 import { createEditor, Descendant } from "slate";
 import { withHistory } from "slate-history";
-import { Post } from "~/pages";
+import { Post } from "~/common/post/types";
 import EditorLayout from "~/layouts/EditorLayout";
 import axios from "axios";
 import { GetServerSideProps } from "next";

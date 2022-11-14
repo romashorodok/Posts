@@ -6,20 +6,7 @@ import Card from "~/components/base/Card";
 import axios from "axios";
 import { Node } from "slate";
 import { parseText } from "~/common/editor/transforms";
-
-type Tag = {
-  name: string;
-};
-
-export type Post = {
-  id?: number;
-
-  title: string;
-  createdAt: string;
-  description: string;
-
-  image?: string;
-};
+import { Post, Tag } from "~/common/post/types";
 
 interface Props {
   posts: Array<Post>;
@@ -27,7 +14,7 @@ interface Props {
   featuredPost: Post;
 }
 
-function prefacePost(post: Post): string {
+export function prefacePost(post: Post): string {
   return parseText(post)
     .slice(0, 10)
     .map((item) => Node.string(item))

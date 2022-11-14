@@ -5,7 +5,7 @@ import {
   Element as SlateElement,
   Descendant,
 } from "slate";
-import { Post } from "~/pages";
+import { Post } from "~/common/post/types";
 import { CustomEditor, CustomText } from "./types.d";
 
 export function parseText(post: Post): Descendant[] {
