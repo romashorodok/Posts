@@ -10,6 +10,7 @@ import LandingLayout from "~/layouts/LandingLayout";
 import LandingStyles from "~/Styles/pages/index.module.scss";
 import Styles from "~/Styles/pages/post.module.scss";
 import { prefacePost } from "..";
+import { capitalize } from "~/common/helpers";
 
 interface Props {
   post: Post;
@@ -28,7 +29,8 @@ function Index({ post }: Props) {
   );
 
   const authorName = React.useMemo(
-    () => `${post?.user.firstName} ${post.user.lastName}`,
+    () =>
+      `${capitalize(post?.user.firstName)} ${capitalize(post.user.lastName)}`,
     [post]
   );
 
@@ -60,7 +62,7 @@ function Index({ post }: Props) {
         </div>
         <div>
           {post.tags.map((tag) => (
-            <h1>{tag.name}</h1>
+            <h1>{capitalize(tag.name)}</h1>
           ))}
         </div>
       </section>

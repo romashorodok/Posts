@@ -7,6 +7,7 @@ import axios from "axios";
 import { Node } from "slate";
 import { parseText } from "~/common/editor/transforms";
 import { Post, Tag } from "~/common/post/types";
+import { capitalize } from "~/common/helpers";
 
 interface Props {
   posts: Array<Post>;
@@ -69,7 +70,7 @@ export function Home({ posts, tags, featuredPost }: Props) {
                 } ${Styles.landing_category}`}
                 onClick={() => setSelectedTag(index)}
               >
-                {category.name}
+                {capitalize(category.name)}
               </li>
             ))}
           </ul>
