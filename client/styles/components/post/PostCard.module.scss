@@ -1,0 +1,24 @@
+.post_card_containere:hover {
+  .post_card_title__animation {
+    background-position: 100% 100%, 0 100%;
+    background-size: 0 3px, 100% 3px;
+  }
+}
+
+.post_card_title__animation {
+  background-image: linear-gradient(transparent, transparent),
+    linear-gradient(black, black);
+
+  background-position: 100% 100%, 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 3px, 0 3px;
+  border-bottom-width: 0;
+
+  transition: background-size 0.5s ease-in-out,
+    background-position 0.5s ease-in-out;
+}
+
+.post_card_description {
+  max-height: 100px;
+  overflow: hidden;
+}

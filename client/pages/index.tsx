@@ -8,6 +8,8 @@ import { Node } from "slate";
 import { parseText } from "~/common/editor/transforms";
 import { Post, Tag } from "~/common/post/types";
 import { capitalize } from "~/common/helpers";
+import PostCardStyle from "~/Styles/components/post/PostCard.module.scss";
+import PostCard from "~/components/post/PostCard";
 
 interface Props {
   posts: Array<Post>;
@@ -80,19 +82,7 @@ export function Home({ posts, tags, featuredPost }: Props) {
 
         <div className={`${Styles.landing_post_cards} grid`}>
           {_posts.map((post: Post) => (
-            <Card
-              image={post.image ? `data:image/*;base64,${post.image}` : null}
-            >
-              <p className="text-xs bg-minor">
-                {new Date(post.createdAt).toDateString()}
-              </p>
-              <p className="text-lg font-bold">{post.title}</p>
-              <p
-                className={`${Styles.landing_card_description} text-xs bg-minor`}
-              >
-                {prefacePost(post)}
-              </p>
-            </Card>
+            <PostCard post={post} />
           ))}
         </div>
       </section>

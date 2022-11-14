@@ -5,7 +5,7 @@ import { Header, Link } from "~/components/base/Header";
 export const logoName = "RUNO";
 
 export const links: Array<Link> = [
-  { name: "Головна", path: "" },
+  { name: "Головна", path: "/" },
   { name: "Статті", path: "" },
   { name: "Контакти", path: "" },
   { name: "Профіль", path: "" },

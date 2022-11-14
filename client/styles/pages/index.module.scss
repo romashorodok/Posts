@@ -43,11 +43,6 @@
   @include mixin.selected;
 }
 
-.landing_card_description {
-  max-height: 100px;
-  overflow: hidden;
-}
-
 .landing_post_cards {
   @include responsive.desktop {
     grid-template-columns: repeat(4, 1fr);
