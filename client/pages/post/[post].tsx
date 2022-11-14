@@ -11,6 +11,7 @@ import LandingStyles from "~/Styles/pages/index.module.scss";
 import Styles from "~/Styles/pages/post.module.scss";
 import { prefacePost } from "..";
 import { capitalize } from "~/common/helpers";
+import TagCard from "~/components/post/TagCard";
 
 interface Props {
   post: Post;
@@ -55,15 +56,16 @@ function Index({ post }: Props) {
       <section className={`${Styles.post_content}`}>
         <EditorRenderer editor={editor} value={text} readonly={true} />
 
+        <div className="flex column gap-3 flex-wrap">
+          {post.tags.map((tag) => (
+            <TagCard tag={tag} />
+          ))}
+        </div>
+
         <div className={`${Styles.post_content_separator}`}>
           <h1>
             By <b>{authorName}</b>
           </h1>
-        </div>
-        <div>
-          {post.tags.map((tag) => (
-            <h1>{capitalize(tag.name)}</h1>
-          ))}
         </div>
       </section>
     </LandingLayout>
