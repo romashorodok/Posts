@@ -1,0 +1,28 @@
+@use "~/Styles/mixins" as mixin;
+@use "~/styles/responsive" as responsive;
+@use "~/styles/vars" as var;
+
+.post_content {
+  background: var.$normal;
+
+  @include responsive.desktop {
+    padding: 5rem 15%;
+  }
+
+  @include responsive.tablet {
+    padding: 5rem 5%;
+  }
+
+  @include responsive.mobile {
+    padding: 5rem 2%;
+  }
+}
+
+.post_content_separator {
+  border-top: 0.8px solid var.$minor;
+  margin-top: 2rem;
+
+  & :first-child {
+    margin: 2rem 0;
+  }
+}
