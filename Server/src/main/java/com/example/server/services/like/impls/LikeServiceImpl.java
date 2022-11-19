@@ -2,7 +2,6 @@ package com.example.server.services.like.impls;
 
 import com.example.server.dto.LikeDTO;
 import com.example.server.mappers.LikeMapper;
-import com.example.server.model.Like;
 import com.example.server.repository.LikeRepository;
 import com.example.server.services.like.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class LikeServiceImpl implements LikeService{
         if(like.getId()!=null){
             return null;
         }
-        return mapper.toDTO(repository.save(mapper.toEntity(new Like(), like)));
+        return mapper.toDTO(repository.save(mapper.toEntity(like)));
     }
 
     @Override
@@ -34,12 +33,12 @@ public class LikeServiceImpl implements LikeService{
 
     @Override
     public LikeDTO getOne(int id) {
-        return repository.findById(id).map(mapper::toDTO).orElseThrow(NoSuchElementException::new);
+        return repository.findById(id).map(elem -> mapper.toDTO(elem)).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
     public List<LikeDTO> getAll() {
-        return repository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
+        return repository.findAll().stream().map(elem -> mapper.toDTO(elem)).collect(Collectors.toList());
     }
 
     @Override

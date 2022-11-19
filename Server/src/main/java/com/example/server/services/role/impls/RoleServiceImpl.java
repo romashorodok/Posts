@@ -2,12 +2,10 @@ package com.example.server.services.role.impls;
 
 import com.example.server.dto.RoleDTO;
 import com.example.server.mappers.RoleMapper;
-import com.example.server.model.Role;
 import com.example.server.repository.RoleRepository;
 import com.example.server.services.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -24,7 +22,7 @@ public class RoleServiceImpl implements RoleService {
         if(role.getId()!=null){
             return null;
         }
-        return mapper.toDTO(repository.save(mapper.toEntity(new Role(), role)));
+        return mapper.toDTO(repository.save(mapper.toEntity(role)));
     }
 
     @Override
@@ -34,12 +32,12 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDTO getOne(int id) {
-        return repository.findById(id).map(mapper::toDTO).orElseThrow(NoSuchElementException::new);
+        return repository.findById(id).map(elem -> mapper.toDTO(elem)).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
     public List<RoleDTO> getAll() {
-        return repository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
+        return repository.findAll().stream().map(elem -> mapper.toDTO(elem)).collect(Collectors.toList());
     }
 
     @Override

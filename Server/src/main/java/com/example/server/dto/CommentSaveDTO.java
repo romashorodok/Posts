@@ -1,6 +1,5 @@
 package com.example.server.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,9 +12,9 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentDTO {
+public class CommentSaveDTO {
     private Integer id;
-    private ProfileDTO user;
+    private IdDTO user;
     private String content;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date createdAt;

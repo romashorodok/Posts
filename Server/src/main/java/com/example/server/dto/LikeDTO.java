@@ -1,18 +1,13 @@
 package com.example.server.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class LikeDTO {
-
     private Integer id;
-    private UserDTO user;
-
-    public LikeDTO(int id, UserDTO user) {
-        this.id = id;
-        this.user = user;
-    }
-
-    public LikeDTO() {
-    }
+    private IdDTO user;
 }

@@ -1,45 +1,34 @@
 package com.example.server.mappers;
 
 import com.example.server.dto.CommentDTO;
+import com.example.server.dto.CommentSaveDTO;
 import com.example.server.model.Comment;
-import com.example.server.model.Like;
-import com.example.server.model.Post;
-import com.example.server.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
-import java.util.stream.Collectors;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-@Component
-public class CommentMapper {
-    @Autowired
-    UserMapper userMapper;
-    @Autowired
-    LikeMapper likeMapper;
-    @Lazy
-    @Autowired
-    PostMapper postMapper;
 
-    public CommentDTO toDTO(Comment comment){
-        CommentDTO dto = new CommentDTO();
-        dto.setId(comment.getId());
-        dto.setUser(userMapper.toDTO(comment.getUser()));
-        dto.setContent(comment.getContent());
-        dto.setCreatedAt(comment.getCreatedAt());
-        dto.setLikes(comment.getLikes().stream().map(elem -> likeMapper.toDTO(elem)).collect(Collectors.toSet()));
-        dto.setPost(postMapper.toCommonPostDTO(comment.getPost()));
-        return dto;
+@Mapper(componentModel = "spring")
+public interface CommentMapper {
+    Comment toEntity(CommentSaveDTO comment);
+    CommentSaveDTO toCommentSaveDTO(Comment comment);
+    @Mapping(source = "user.avatarUrl", target = "user.avatar", qualifiedByName = "urlToByte")
+    CommentDTO toDTO(Comment comment);
+    Comment toEntity(@MappingTarget Comment comment, CommentSaveDTO commentDTO);
+    @Named("urlToByte")
+    static byte[] urlToByte(String url) throws IOException {
+        if(!url.isEmpty()){
+            Path path = Paths.get("Server/src/main/resources/images/" + url);
+            if(Files.exists(path)){
+                return Files.readAllBytes(path);
+            }
+        }
+        return null;
     }
-
-    public Comment toEntity(Comment comment, CommentDTO dto){
-        comment.setId(dto.getId());
-        comment.setUser(userMapper.toEntity(new User(), dto.getUser()));
-        comment.setContent(dto.getContent());
-        comment.setCreatedAt(dto.getCreatedAt());
-        comment.setLikes(dto.getLikes().stream().map(elem -> likeMapper.toEntity(new Like(), elem)).collect(Collectors.toSet()));
-        comment.setPost(postMapper.toEntity(new Post(), dto.getPost()));
-        return comment;
-    }
-
 }
