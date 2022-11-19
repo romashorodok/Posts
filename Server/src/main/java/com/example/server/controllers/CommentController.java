@@ -1,6 +1,7 @@
 package com.example.server.controllers;
 
 import com.example.server.dto.CommentDTO;
+import com.example.server.dto.CommentSaveDTO;
 import com.example.server.services.comment.impls.CommentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,8 +28,8 @@ public class CommentController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<CommentDTO> saveComment(@RequestBody CommentDTO comment)  {
-        CommentDTO savedComment = commentService.save(comment);
+    public ResponseEntity<CommentSaveDTO> saveComment(@RequestBody CommentSaveDTO comment)  {
+        CommentSaveDTO savedComment = commentService.save(comment);
         if(savedComment==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -42,7 +43,7 @@ public class CommentController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<CommentDTO> updateComment(@RequestBody CommentDTO comment)  {
+    public ResponseEntity<CommentSaveDTO> updateComment(@RequestBody CommentSaveDTO comment)  {
         return new ResponseEntity<>(commentService.update(comment), HttpStatus.OK);
     }
 }

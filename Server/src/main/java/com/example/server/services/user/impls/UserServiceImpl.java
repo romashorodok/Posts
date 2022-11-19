@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    UserMapper userMapper;
+    UserMapper mapper;
     @Autowired
     PasswordEncoder encoder;
 
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Files.write(Paths.get( "Server/src/main/resources/images/" + filename), file.getBytes());
         user.setPassword(encoder.encode(user.getPassword()));
         user.setAvatarUrl(filename);
-        return userMapper.toDTO(userRepository.save(userMapper.toEntity(new User(), user)));
+        return mapper.toDTO(userRepository.save(mapper.toEntity(user)));
     }
 
     @Override
@@ -52,32 +52,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDTO getOne(int id) {
-        return userRepository.findById(id).map(userMapper::toDTO).orElseThrow(NoSuchElementException::new);
+        return userRepository.findById(id).map(mapper::toDTO).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
     public List<UserDTO> getAll() {
-        return userRepository.findAll().stream().map(userMapper::toDTO).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
 
     public List<ProfileDTO> getProfilesAll() {
-        return userRepository.findAll().stream().map(elem -> {
-            try {
-                return userMapper.toProfileDTO(elem);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(elem -> mapper.toProfileDTO(elem)).collect(Collectors.toList());
     }
 
     public ProfileDTO getOneProfileById(int id){
-        return userRepository.findById(id).map(elem -> {
-            try {
-                return userMapper.toProfileDTO(elem);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        return userRepository.findById(id).map(elem -> mapper.toProfileDTO(elem)
         ).orElseThrow(NoSuchElementException::new);
     }
 
@@ -85,8 +73,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDTO update(UserDTO user, MultipartFile file) throws IOException {
         User user1 = userRepository.findById(user.getId()).orElseThrow(NoSuchElementException::new);
         if(!file.isEmpty()){
-            Files.deleteIfExists(
+            if(!user1.getAvatarUrl().equals("")){
+                Files.deleteIfExists(
                     Paths.get("Server/src/main/resources/images/" + user1.getAvatarUrl()));
+            }
             String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
             Files.write(Paths.get( "Server/src/main/resources/images/" + filename), file.getBytes());
             user.setAvatarUrl(filename);
@@ -95,7 +85,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         else{
             user.setAvatarUrl(user1.getAvatarUrl());
         }
-        return userMapper.toDTO(userRepository.save(userMapper.toEntity(user1, user)));
+        return mapper.toDTO(userRepository.save(mapper.toEntity(user1, user)));
     }
 
     @Override

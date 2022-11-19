@@ -3,19 +3,12 @@ package com.example.server.mappers;
 
 import com.example.server.dto.RoleDTO;
 import com.example.server.model.Role;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
-@Component
-public class RoleMapper {
-    public RoleDTO toDTO(Role role){
-        RoleDTO dto = new RoleDTO();
-        dto.setId(role.getId());
-        dto.setName(role.getName());
-        return dto;
-    }
-    public Role toEntity(Role role, RoleDTO dto){
-        role.setId(dto.getId());
-        role.setName(dto.getName());
-        return role;
-    }
+@Mapper(componentModel = "spring")
+public interface RoleMapper {
+    Role toEntity(RoleDTO role);
+    RoleDTO toDTO(Role role);
+    Role toEntity(@MappingTarget Role role, RoleDTO roleDTO);
 }

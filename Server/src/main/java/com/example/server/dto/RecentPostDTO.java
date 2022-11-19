@@ -1,11 +1,15 @@
 package com.example.server.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RecentPostDTO {
     private Integer id;
     private String title;
@@ -13,17 +17,4 @@ public class RecentPostDTO {
     private String description;
     private Date createdAt;
     private byte[] image;
-
-
-    public RecentPostDTO() {
-    }
-
-    public RecentPostDTO(Integer id, String title, Set<TagDTO> tags, String description, Date createdAt, byte[] image) {
-        this.id = id;
-        this.title = title;
-        this.tags = tags;
-        this.description = description;
-        this.createdAt = createdAt;
-        this.image = image;
-    }
 }

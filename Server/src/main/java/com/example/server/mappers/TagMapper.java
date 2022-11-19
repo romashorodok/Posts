@@ -2,19 +2,12 @@ package com.example.server.mappers;
 
 import com.example.server.dto.TagDTO;
 import com.example.server.model.Tag;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
-@Component
-public class TagMapper {
-    public TagDTO toDTO(Tag tag){
-        TagDTO dto = new TagDTO();
-        dto.setId(tag.getId());
-        dto.setName(tag.getName());
-        return dto;
-    }
-    public Tag toEntity(Tag tag, TagDTO dto){
-        tag.setId(dto.getId());
-        tag.setName(dto.getName());
-        return tag;
-    }
+@Mapper(componentModel = "spring")
+public interface TagMapper {
+    Tag toEntity(TagDTO tag);
+    TagDTO toDTO(Tag tag);
+    Tag toEntity(@MappingTarget Tag tag, TagDTO tagDTO);
 }

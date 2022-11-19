@@ -1,18 +1,15 @@
 package com.example.server.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TagDTO {
     private Integer id;
     private String name;
 
-    public TagDTO() {
-    }
-
-    public TagDTO(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }

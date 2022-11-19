@@ -2,12 +2,10 @@ package com.example.server.services.tag.impls;
 
 import com.example.server.dto.TagDTO;
 import com.example.server.mappers.TagMapper;
-import com.example.server.model.Tag;
 import com.example.server.repository.TagRepository;
 import com.example.server.services.tag.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -24,7 +22,7 @@ public class TagServiceImpl implements TagService {
         if(tag.getId()!=null){
             return null;
         }
-        return mapper.toDTO(repository.save(mapper.toEntity(new Tag(), tag)));
+        return mapper.toDTO(repository.save(mapper.toEntity(tag)));
     }
 
     @Override
@@ -34,12 +32,12 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDTO getOne(int id) {
-        return repository.findById(id).map(mapper::toDTO).orElseThrow(NoSuchElementException::new);
+        return repository.findById(id).map(elem -> mapper.toDTO(elem)).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
     public List<TagDTO> getAll() {
-        return repository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
+        return repository.findAll().stream().map(elem -> mapper.toDTO(elem)).collect(Collectors.toList());
     }
 
     @Override

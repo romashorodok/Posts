@@ -1,6 +1,7 @@
 package com.example.server.services.comment.impls;
 
 import com.example.server.dto.CommentDTO;
+import com.example.server.dto.CommentSaveDTO;
 import com.example.server.mappers.CommentMapper;
 import com.example.server.model.Comment;
 import com.example.server.repository.CommentRepository;
@@ -8,6 +9,7 @@ import com.example.server.services.comment.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -20,11 +22,12 @@ public class CommentServiceImpl implements CommentService {
     CommentMapper mapper;
 
     @Override
-    public CommentDTO save(CommentDTO comment) {
+    public CommentSaveDTO save(CommentSaveDTO comment) {
         if(comment.getId()!=null){
             return null;
         }
-        return mapper.toDTO(repository.save(mapper.toEntity(new Comment(), comment)));
+        comment.setCreatedAt(new Date());
+        return mapper.toCommentSaveDTO(repository.save(mapper.toEntity(comment)));
     }
 
     @Override
@@ -43,7 +46,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDTO update(CommentDTO comment) {
-        return mapper.toDTO(repository.save(mapper.toEntity(repository.findById(comment.getId()).orElseThrow(NoSuchElementException::new), comment)));
+    public CommentSaveDTO update(CommentSaveDTO comment) {
+        Comment comment1 = repository.findById(comment.getId()).orElseThrow(NoSuchElementException::new);
+        comment.setCreatedAt(comment1.getCreatedAt());
+        return mapper.toCommentSaveDTO(repository.save(mapper.toEntity(comment1, comment)));
     }
 }

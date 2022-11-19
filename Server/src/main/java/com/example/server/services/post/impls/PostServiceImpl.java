@@ -38,7 +38,7 @@ public class PostServiceImpl implements PostService {
         Files.write(Paths.get( "Server/src/main/resources/images/" + filename), file.getBytes());
         post.setImageUrl(filename);
         post.setCreatedAt(new Date());
-        return mapper.toCommonPostDTO(repository.save(mapper.toEntity(new Post(), post)));
+        return mapper.toDTO(repository.save(mapper.toEntity(post)));
     }
 
     @Override
@@ -50,24 +50,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ViewPostDTO getOne(int id) {
-        return repository.findById(id).map(elem -> {
-            try {
-                return mapper.toViewPostDTO(elem);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).orElseThrow(NoSuchElementException::new);
+        return repository.findById(id).map(elem -> mapper.toViewPostDTO(elem)).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
     public List<ViewPostDTO> getAll() {
-        return repository.findAll().stream().map(elem -> {
-            try {
-                return mapper.toViewPostDTO(elem);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.toList());
+        return repository.findAll().stream().map(elem -> mapper.toViewPostDTO(elem)).collect(Collectors.toList());
     }
 
     @Override
@@ -90,13 +78,7 @@ public class PostServiceImpl implements PostService {
     }
 
     public List<RecentPostDTO> getRecentPosts(String tag, int size){
-        return repository.findAllRecentByTags(tag, PageRequest.of(0, size)).stream().map(elem -> {
-            try {
-                return mapper.toRecentPostDTO(elem);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.toList());
+        return repository.findAllRecentByTags(tag, PageRequest.of(0, size)).stream().map(elem -> mapper.toRecentPostDTO(elem)).collect(Collectors.toList());
     }
 
     public RecentPostDTO getMostLikedPost() throws IOException {
@@ -105,7 +87,6 @@ public class PostServiceImpl implements PostService {
 
     public List<PostDTO> getByUsername(String title){
         return repository.findByTitleContainingIgnoreCase(title).stream().map(mapper::toDTO).collect(Collectors.toList());
-
     }
     public List<PostDTO> getAllOrderedByLikes(){
         return repository.sortByLikes().stream().map(mapper::toDTO).collect(Collectors.toList());
