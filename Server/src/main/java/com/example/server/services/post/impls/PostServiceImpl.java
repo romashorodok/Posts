@@ -1,6 +1,7 @@
 package com.example.server.services.post.impls;
 
 import com.example.server.dto.PostDTO;
+import com.example.server.dto.RecentPostDTO;
 import com.example.server.dto.ViewPostDTO;
 import com.example.server.mappers.PostMapper;
 import com.example.server.model.Post;
