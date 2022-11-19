@@ -7,6 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
+import org.springframework.util.Base64Utils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,7 +27,7 @@ public interface CommentMapper {
         if(!url.isEmpty()){
             Path path = Paths.get("Server/src/main/resources/images/" + url);
             if(Files.exists(path)){
-                return Files.readAllBytes(path);
+                return Base64Utils.decode(Files.readAllBytes(path));
             }
         }
         return null;

@@ -6,6 +6,7 @@ import com.example.server.dto.RecentPostDTO;
 import com.example.server.dto.ViewPostDTO;
 import com.example.server.model.*;
 import org.mapstruct.*;
+import org.springframework.util.Base64Utils;
 
 
 import java.io.IOException;
@@ -30,7 +31,7 @@ public interface PostMapper {
         if(!url.equals("")){
             Path path = Paths.get("Server/src/main/resources/images/" + url);
             if(Files.exists(path)){
-                return Files.readAllBytes(path);
+                return Base64Utils.decode(Files.readAllBytes(path));
             }
         }
         return null;
