@@ -88,8 +88,8 @@ public class PostServiceImpl implements PostService {
         return repository.findAllRecentByTags(tag, PageRequest.of(0, size)).stream().map(elem -> mapper.toRecentPostDTO(elem)).collect(Collectors.toList());
     }
 
-    public ViewPostDTO getMostLikedPost() throws IOException {
-        return mapper.toViewPostDTO(repository.findMostLiked());
+    public RecentPostDTO getMostLikedPost() throws IOException {
+        return mapper.toRecentPostDTO(repository.findMostLiked());
     }
 
     public List<PostDTO> getByUsername(String title){

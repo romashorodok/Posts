@@ -71,7 +71,7 @@ public class PostController {
     }
 
     @GetMapping("/most-liked")
-    public ResponseEntity<ViewPostDTO> getMostLikePost() throws IOException {
+    public ResponseEntity<RecentPostDTO> getMostLikePost() throws IOException {
         return new ResponseEntity<>(postService.getMostLikedPost(), HttpStatus.OK);
     }
 
