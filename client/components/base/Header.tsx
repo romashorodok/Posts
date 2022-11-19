@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Styles from "~/Styles/components/Header.module.scss";
+import NextLink from "next/link";
 
 export interface Link {
   name?: string;
@@ -27,18 +28,20 @@ export function Header({
         float ? "fixed" : "static"
       } flex flex-row justify-between`}
     >
-      <h1 className="text-base">{logoName}</h1>
+      <NextLink href={"/"} className="text-base">
+        {logoName}
+      </NextLink>
       <div className={`${Styles.navigation_container} flex flex-row`}>
         <section className="flex gap-4">
           {links?.map((link: Link, index) => (
-            <a href={link.path} key={index}>
-              {link?.name}
-            </a>
+            <NextLink href={link.path} key={index}>
+              {link.name}
+            </NextLink>
           ))}
         </section>
         <section className="flex gap-4">
           {socialLinks?.map((link: Link, index) => (
-            <a href={link.path} key={index}>
+            <NextLink href={link.path} key={index}>
               <Image
                 className="social_icon"
                 src={link.icon}
@@ -46,7 +49,7 @@ export function Header({
                 width={25}
                 height={25}
               />
-            </a>
+            </NextLink>
           ))}
         </section>
         <section>

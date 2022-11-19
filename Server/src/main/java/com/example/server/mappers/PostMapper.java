@@ -7,6 +7,7 @@ import com.example.server.dto.ViewPostDTO;
 import com.example.server.model.*;
 import org.mapstruct.*;
 
+
 import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

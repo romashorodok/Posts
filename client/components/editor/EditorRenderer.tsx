@@ -10,6 +10,8 @@ import Leaf from "~/components/editor/Leaf";
 interface EditorRendererProps {
   editor: CustomEditor;
   value: Descendant[];
+
+  readonly?: boolean;
   toolbar?: React.ReactElement;
   onChange?: ((value: Descendant[]) => void) | undefined;
   onKeyDown?: ((event: React.KeyboardEvent) => void) | undefined;
@@ -23,6 +25,7 @@ function EditorRenderer({
   onKeyDown,
   toolbar,
   sideEffect,
+  readonly,
 }: EditorRendererProps): React.ReactElement {
   const renderElement = React.useCallback((props: RenderElementProps) => {
     if (sideEffect) sideEffect();
@@ -36,9 +39,13 @@ function EditorRenderer({
 
   return (
     <Slate editor={editor} value={value} onChange={onChange}>
-      <Toolbar className={`${Styles.editor_padding} ${Styles.editor_toolbar}`}>
-        {toolbar}
-      </Toolbar>
+      {toolbar ? (
+        <Toolbar
+          className={`${Styles.editor_padding} ${Styles.editor_toolbar}`}
+        >
+          {toolbar}
+        </Toolbar>
+      ) : null}
       <Editable
         className={Styles.editor_padding}
         renderElement={renderElement}
@@ -47,6 +54,7 @@ function EditorRenderer({
         placeholder="Enter some text…"
         spellCheck
         autoFocus
+        readOnly={readonly}
       />
     </Slate>
   );

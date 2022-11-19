@@ -1,0 +1,10 @@
+@use "~/styles/vars" as var;
+
+.tagCard_container {
+  padding: 10px;
+
+  border: .9px solid var.$minor;
+  background: rgba(#eeeeee, .5);
+
+  width: max-content;
+}

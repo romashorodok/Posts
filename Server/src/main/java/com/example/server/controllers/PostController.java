@@ -7,6 +7,7 @@ import com.example.server.services.post.impls.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -60,16 +61,17 @@ public class PostController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<PostDTO> updatePost(@RequestPart PostDTO post, @RequestParam MultipartFile file) throws IOException {
+    public ResponseEntity<PostDTO> updatePost(@RequestPart PostDTO post, @Nullable @RequestParam(required = false) MultipartFile file) throws IOException {
         return new ResponseEntity<>(postService.update(post, file), HttpStatus.OK);
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<List<RecentPostDTO>> getRecentPosts(@RequestParam String tag,@RequestParam int size){
+    public ResponseEntity<List<ViewPostDTO>> getRecentPosts(@RequestParam String tag,@RequestParam int size){
             return new ResponseEntity<>(postService.getRecentPosts(tag, size), HttpStatus.OK);
     }
+
     @GetMapping("/most-liked")
-    public ResponseEntity<RecentPostDTO> getMostLikePost() throws IOException {
+    public ResponseEntity<ViewPostDTO> getMostLikePost() throws IOException {
         return new ResponseEntity<>(postService.getMostLikedPost(), HttpStatus.OK);
     }
 
