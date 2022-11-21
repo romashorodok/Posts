@@ -6,6 +6,7 @@ import com.example.server.services.comment.impls.CommentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,12 +38,14 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("@authComponent.hasPermissionComment(#id) or hasRole('ROLE_Admin')")
     public ResponseEntity<HttpStatus> deleteComment(@PathVariable("id") int id)  {
         commentService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/")
+    @PreAuthorize("@authComponent.hasPermissionComment(#comment.id) or hasRole('ROLE_Admin')")
     public ResponseEntity<CommentSaveDTO> updateComment(@RequestBody CommentSaveDTO comment)  {
         return new ResponseEntity<>(commentService.update(comment), HttpStatus.OK);
     }

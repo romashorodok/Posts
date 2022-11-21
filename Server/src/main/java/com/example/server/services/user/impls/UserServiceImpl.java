@@ -80,11 +80,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
             Files.write(Paths.get( "Server/src/main/resources/images/" + filename), file.getBytes());
             user.setAvatarUrl(filename);
-            user.setPassword(encoder.encode(user.getPassword()));
         }
         else{
             user.setAvatarUrl(user1.getAvatarUrl());
         }
+        user.setPassword(encoder.encode(user.getPassword()));
         return mapper.toDTO(userRepository.save(mapper.toEntity(user1, user)));
     }
 
