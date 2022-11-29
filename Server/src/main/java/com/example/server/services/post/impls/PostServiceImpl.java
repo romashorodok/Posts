@@ -10,8 +10,10 @@ import com.example.server.services.post.PostService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +30,8 @@ public class PostServiceImpl implements PostService {
     PostRepository repository;
     @Autowired
     PostMapper mapper;
+    @Value("${images.path.save}")
+    private String path;
 
     @Override
     public PostDTO save(PostDTO post, MultipartFile file) throws IOException{
@@ -35,16 +39,17 @@ public class PostServiceImpl implements PostService {
             return null;
         }
         String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-        Files.write(Paths.get( "Server/src/main/resources/images/" + filename), file.getBytes());
+        Files.write(Paths.get( path + filename), file.getBytes());
         post.setImageUrl(filename);
         post.setCreatedAt(new Date());
         return mapper.toDTO(repository.save(mapper.toEntity(post)));
     }
 
     @Override
+    @PreAuthorize("@authComponent.hasPermissionPost(#post.id) or hasRole('ROLE_Admin')")
     public void delete(int id) throws IOException {
         Files.deleteIfExists(
-                Paths.get("Server/src/main/resources/images/" +  repository.findById(id).orElseThrow(NoSuchElementException::new).getImageUrl()));
+                Paths.get(path +  repository.findById(id).orElseThrow(NoSuchElementException::new).getImageUrl()));
         repository.deleteById(id);
     }
 
@@ -59,17 +64,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @PreAuthorize("@authComponent.hasPermissionPost(#post.id) or hasRole('ROLE_Admin')")
     public PostDTO update(PostDTO post, @Nullable MultipartFile file) throws IOException {
         Post post1 = repository.findById(post.getId()).orElseThrow(NoSuchElementException::new);
 
         if(file != null){
             if(!Objects.equals(post1.getImageUrl(), "")){
                 Files.deleteIfExists(
-                    Paths.get("Server/src/main/resources/images/" + post1.getImageUrl()));
+                    Paths.get(path + post1.getImageUrl()));
             }
 
             String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-            Path path = Paths.get("Server/src/main/resources/images/".concat(filename));
+            Path path = Paths.get(this.path.concat(filename));
 
             Files.createDirectories(path.getParent());
             Files.write(path, file.getBytes());

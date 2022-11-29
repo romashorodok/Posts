@@ -1,5 +1,6 @@
 package com.example.server.mappers;
 
+import com.example.server.dto.CommentatorDTO;
 import com.example.server.dto.ProfileDTO;
 import com.example.server.dto.UserDTO;
 import com.example.server.model.User;
@@ -13,13 +14,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ProfilePostMapper.class})
 public interface UserMapper {
     User toEntity(UserDTO user);
     UserDTO toDTO(User user);
     User toEntity(@MappingTarget User user, UserDTO userDTO);
     @Mapping(source = "avatarUrl", target = "avatar", qualifiedByName = "urlToByte")
     ProfileDTO toProfileDTO(User user);
+    @Mapping(source = "avatarUrl", target = "avatar", qualifiedByName = "urlToByte")
+    CommentatorDTO toCommentatorDTO(User user);
     @Named("urlToByte")
      static byte[] urlToByte(String url) throws IOException {
         if(!url.equals("")){

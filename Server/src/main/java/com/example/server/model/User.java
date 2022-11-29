@@ -1,13 +1,18 @@
 package com.example.server.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,28 +32,7 @@ public class User {
     private String lastName;
     @Column(name = "avatar_url")
     private String avatarUrl;
-
-    public User() {
-    }
-
-    public User(int id, Set<Role> role, String password, String email, String firstName, String lastName, String avatarUrl) {
-        this.id = id;
-        this.role = role;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.avatarUrl = avatarUrl;
-
-    }
-
-    public User(Set<Role> role, String password, String email, String firstName, String lastName, String avatarUrl) {
-        this.role = role;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.avatarUrl = avatarUrl;
-    }
-
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<Post> posts;
 }

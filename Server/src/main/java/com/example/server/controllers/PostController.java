@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,14 +55,12 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("@authComponent.hasPermissionPost(#id) or hasRole('ROLE_Admin')")
     public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") int id) throws IOException {
         postService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/")
-    @PreAuthorize("@authComponent.hasPermissionPost(#post.id) or hasRole('ROLE_Admin')")
     public ResponseEntity<PostDTO> updatePost(@RequestPart PostDTO post, @Nullable @RequestParam(required = false) MultipartFile file) throws IOException {
         return new ResponseEntity<>(postService.update(post, file), HttpStatus.OK);
     }

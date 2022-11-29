@@ -8,6 +8,7 @@ import com.example.server.repository.UserRepository;
 import com.example.server.services.user.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,6 +31,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     UserMapper mapper;
     @Autowired
     PasswordEncoder encoder;
+    @Value("${images.path.save}")
+    private String path;
 
     @Override
     public UserDTO save(UserDTO user, MultipartFile file) throws IOException {
@@ -37,7 +40,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return null;
         }
         String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-        Files.write(Paths.get( "Server/src/main/resources/images/" + filename), file.getBytes());
+        Files.write(Paths.get( path + filename), file.getBytes());
         user.setPassword(encoder.encode(user.getPassword()));
         user.setAvatarUrl(filename);
         return mapper.toDTO(userRepository.save(mapper.toEntity(user)));
@@ -46,7 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void delete(int id) throws IOException {
         Files.deleteIfExists(
-                Paths.get("Server/src/main/resources/images/" +  userRepository.findById(id).orElseThrow(NoSuchElementException::new).getAvatarUrl()));
+                Paths.get(path +  userRepository.findById(id).orElseThrow(NoSuchElementException::new).getAvatarUrl()));
         userRepository.deleteById(id);
     }
 
@@ -75,10 +78,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if(!file.isEmpty()){
             if(!user1.getAvatarUrl().equals("")){
                 Files.deleteIfExists(
-                    Paths.get("Server/src/main/resources/images/" + user1.getAvatarUrl()));
+                    Paths.get(path + user1.getAvatarUrl()));
             }
             String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-            Files.write(Paths.get( "Server/src/main/resources/images/" + filename), file.getBytes());
+            Files.write(Paths.get( path + filename), file.getBytes());
             user.setAvatarUrl(filename);
         }
         else{
