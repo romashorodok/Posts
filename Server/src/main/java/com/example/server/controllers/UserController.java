@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<UserDTO> updateUser(@RequestPart UserDTO user, @RequestPart MultipartFile file) throws IOException {
+    public ResponseEntity<UserDTO> updateUser(@RequestPart UserDTO user, @RequestPart(required = false) MultipartFile file) throws IOException {
         return new ResponseEntity<>(userService.update(user, file), HttpStatus.OK);
     }
 }

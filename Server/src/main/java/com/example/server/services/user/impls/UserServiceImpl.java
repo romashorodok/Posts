@@ -8,6 +8,7 @@ import com.example.server.repository.UserRepository;
 import com.example.server.services.user.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -33,11 +34,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDTO save(UserDTO user, MultipartFile file) throws IOException {
-        if(user.getId()!=null){
+        if (user.getId() != null) {
             return null;
         }
         String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-        Files.write(Paths.get( "Server/src/main/resources/images/" + filename), file.getBytes());
+        Files.write(Paths.get("Server/src/main/resources/images/" + filename), file.getBytes());
         user.setPassword(encoder.encode(user.getPassword()));
         user.setAvatarUrl(filename);
         return mapper.toDTO(userRepository.save(mapper.toEntity(user)));
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void delete(int id) throws IOException {
         Files.deleteIfExists(
-                Paths.get("Server/src/main/resources/images/" +  userRepository.findById(id).orElseThrow(NoSuchElementException::new).getAvatarUrl()));
+                Paths.get("Server/src/main/resources/images/" + userRepository.findById(id).orElseThrow(NoSuchElementException::new).getAvatarUrl()));
         userRepository.deleteById(id);
     }
 
@@ -64,28 +65,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll().stream().map(elem -> mapper.toProfileDTO(elem)).collect(Collectors.toList());
     }
 
-    public ProfileDTO getOneProfileById(int id){
+    public ProfileDTO getOneProfileById(int id) {
         return userRepository.findById(id).map(elem -> mapper.toProfileDTO(elem)
         ).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public UserDTO update(UserDTO user, MultipartFile file) throws IOException {
+    public UserDTO update(UserDTO user, @Nullable MultipartFile file) throws IOException {
         User user1 = userRepository.findById(user.getId()).orElseThrow(NoSuchElementException::new);
-        if(!file.isEmpty()){
-            if(!user1.getAvatarUrl().equals("")){
-                Files.deleteIfExists(
-                    Paths.get("Server/src/main/resources/images/" + user1.getAvatarUrl()));
-            }
-            String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-            Files.write(Paths.get( "Server/src/main/resources/images/" + filename), file.getBytes());
-            user.setAvatarUrl(filename);
-            user.setPassword(encoder.encode(user.getPassword()));
-        }
-        else{
-            user.setAvatarUrl(user1.getAvatarUrl());
-        }
-        return mapper.toDTO(userRepository.save(mapper.toEntity(user1, user)));
+
+        User freshEntity = mapper.toEntity(user1, user);
+
+        if (user.getPassword() != null)
+            freshEntity.setPassword(encoder.encode(user.getPassword()));
+
+        return mapper.toDTO(userRepository.save(freshEntity));
     }
 
     @Override
@@ -93,7 +87,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRole().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority("ROLE"+role));
+            authorities.add(new SimpleGrantedAuthority("ROLE" + role));
         });
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
