@@ -11,7 +11,7 @@ import {
 } from "slate";
 import { ReactEditor, RenderLeafProps } from "slate-react";
 import { HistoryEditor } from "slate-history";
-import { type } from "os";
+
 
 export const LIST_TYPES = ["numbered-list", "bulleted-list"];
 export const TEXT_ALIGN_TYPES = ["left", "center", "right"];
@@ -20,7 +20,7 @@ export const TEXT_SIZES = {
   "bulleted-list": "14",
   "numbered-list": "14",
   "heading-two": "14",
-  "heading-one": "14",
+  "heading-one": "26",
   "list-item": "14",
   paragraph: "14",
   default: "14",

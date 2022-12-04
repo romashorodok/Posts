@@ -96,6 +96,10 @@ iframe {
   border: 1px solid #eee;
 }
 
+.px-3_5 {
+  padding: 15px 15px 0 15px;
+}
+
 [data-slate-editor] > * + * {
   margin-top: 1em;
 }
@@ -103,8 +107,8 @@ iframe {
 /*
  * Editor styles
  */
-/* 
-h1 {
+
+/* h1 {
   font-size: 1.5rem;
 }
 
@@ -114,4 +118,4 @@ h2 {
 
 p {
   font-size: 1rem;
-} */
+}  */
