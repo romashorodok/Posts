@@ -10,18 +10,26 @@ import { useAuth } from "./auth-context";
 export function InterceptorContextProvider({
   children,
 }: React.PropsWithChildren) {
-  const { setAccessToken } = useAuth();
+  const { setAccessToken, logout } = useAuth();
   const { axiosSSR, axiosAPI } = useAxios();
 
   React.useMemo(() => {
     const errorInterceptor = async (error: AxiosError) => {
       const status = error.response?.status || 500;
 
+      const onErrorHandler = async (e) => {
+        await logout.mutateAsync({});
+        return e;
+      };
+
       switch (status) {
         case 401: {
-          const { data: auth } = await axiosSSR.post("/api/refresh-token");
+          const { data: auth } = await axiosSSR
+            .post("/api/refresh-token")
+            .catch(onErrorHandler);
 
-          if (!auth?.accessToken) return Promise.reject(error);
+          if (!auth?.accessToken)
+            return Promise.reject(() => onErrorHandler(error));
 
           setAccessToken(auth?.accessToken);
 
@@ -34,7 +42,7 @@ export function InterceptorContextProvider({
             JSON.stringify(config.headers || {})
           ) as RawAxiosRequestHeaders;
 
-          return axios(config);
+          return axios(config).catch(onErrorHandler);
         }
       }
     };
