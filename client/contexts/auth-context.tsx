@@ -12,6 +12,8 @@ interface AuthContextProps {
 }
 
 export const AuthContext = React.createContext<AuthContextProps>({});
+const accessTokenKey = "_access-token";
+const profileIdKey = "_profile-id";
 
 export function AuthContextProvider({ children }: React.PropsWithChildren) {
   const [accessToken, setAccessToken] = React.useState<string>();
@@ -29,8 +31,8 @@ export function AuthContextProvider({ children }: React.PropsWithChildren) {
   );
 
   React.useEffect(() => {
-    const localAccessToken = localStorage.getItem("_access-token");
-    const localProfileId = localStorage.getItem("_profile-id");
+    const localAccessToken = localStorage.getItem(accessTokenKey);
+    const localProfileId = localStorage.getItem(profileIdKey);
 
     if (localAccessToken != null && localAccessToken != accessToken)
       setAccessToken(localAccessToken);
@@ -60,7 +62,7 @@ export const useAuth = (): {
     accessToken,
     profileId,
     setAccessToken: setAccessTokenInternal,
-    setProfileId,
+    setProfileId: setProfileIdInternal,
   } = React.useContext<AuthContextProps>(AuthContext);
   const { axiosSSR } = useAxios();
 
@@ -70,7 +72,6 @@ export const useAuth = (): {
       onSuccess: ({ data: user }) => {
         setAccessToken(user?.accessToken);
         setProfileId(user?.id);
-        localStorage.setItem("_profile-id", user?.id);
       },
     }
   );
@@ -81,13 +82,18 @@ export const useAuth = (): {
       setProfileId(undefined);
 
       localStorage.removeItem("_profile-id");
-      localStorage.removeItem("access-token");
+      localStorage.removeItem("_access-token");
     },
   });
 
   const setAccessToken = (accessToken: string) => {
     setAccessTokenInternal(accessToken);
-    localStorage.setItem("_access-token", accessToken);
+    localStorage.setItem(accessTokenKey, accessToken);
+  };
+
+  const setProfileId = (profileId: string) => {
+    setProfileIdInternal(profileId);
+    localStorage.setItem(profileIdKey, profileId);
   };
 
   return { accessToken, setAccessToken, profileId, login, logout };
