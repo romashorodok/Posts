@@ -22,7 +22,8 @@
     "react-query": "^3.39.2",
     "slate": "^0.82.1",
     "slate-history": "^0.66.0",
-    "slate-react": "^0.83.2"
+    "slate-react": "^0.83.2",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "18.8.2",
