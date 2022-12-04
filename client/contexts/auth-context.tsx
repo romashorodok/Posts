@@ -54,6 +54,7 @@ export const useAuth = (): {
   setAccessToken: (accessToken: string) => void;
   profileId?: string;
   login: UseMutationResult<AxiosResponse<any, any>, any, Credentials, any>;
+  logout: UseMutationResult<AxiosResponse<any, any>>;
 } => {
   const {
     accessToken,
@@ -74,10 +75,20 @@ export const useAuth = (): {
     }
   );
 
+  const logout = useMutation(() => axiosSSR.post("/api/logout"), {
+    onMutate: () => {
+      setAccessToken(undefined);
+      setProfileId(undefined);
+
+      localStorage.removeItem("_profile-id");
+      localStorage.removeItem("access-token");
+    },
+  });
+
   const setAccessToken = (accessToken: string) => {
     setAccessTokenInternal(accessToken);
     localStorage.setItem("_access-token", accessToken);
   };
 
-  return { accessToken, setAccessToken, profileId, login };
+  return { accessToken, setAccessToken, profileId, login, logout };
 };

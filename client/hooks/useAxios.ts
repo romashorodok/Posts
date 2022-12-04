@@ -8,6 +8,7 @@ export const useAxios = () => {
    */
   const axiosSSR = React.useMemo<AxiosInstance>(() => Client.axiosSSR, []);
 
+  // FIX: When try refresh access token, not refresh token in localstorage. It may be re-rendering problem
   /**
    * @return axios instance to call spring backend
    */

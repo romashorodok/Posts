@@ -3,19 +3,21 @@ import React from "react";
 import { useAuth } from "~/contexts/auth-context";
 
 function Index() {
-  const { accessToken, profileId } = useAuth();
+  const { profileId, logout } = useAuth();
 
   React.useEffect(() => {
-    if (profileId != null && accessToken != null)
-      (async () => {
-        const profile = await axios.get(`/user/profile/${profileId}`).catch(console.log);
+    if (profileId)
+      axios
+        .get(`/user/profile/${profileId}`)
+        .then(console.log)
+        .catch(console.error);
+  }, [profileId]);
 
-        console.log(profile)
-      })();
-
-  }, [accessToken, profileId]);
-
-  return <div></div>;
+  return (
+    <div>
+      <button onClick={() => logout.mutate({})}>Log out</button>
+    </div>
+  );
 }
 
 export default Index;
