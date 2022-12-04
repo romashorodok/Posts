@@ -1,28 +1,29 @@
 import axios, { AxiosResponse } from "axios";
 import React from "react";
 import { useMutation, UseMutationResult } from "react-query";
-import LoginQuery from "~/api/queries/login";
+import { useAxios } from "~/hooks/useAxios";
 
-export const AuthContext = React.createContext({});
+interface AuthContextProps {
+  accessToken?: string;
+  profileId?: string;
+
+  setAccessToken?: (token: string) => void;
+  setProfileId?: (id: string) => void;
+}
+
+export const AuthContext = React.createContext<AuthContextProps>({});
 
 export function AuthContextProvider({ children }: React.PropsWithChildren) {
   const [accessToken, setAccessToken] = React.useState<string>();
   const [profileId, setProfileId] = React.useState<string>();
 
-  const login = useMutation((credentials: Credentials) => LoginQuery(credentials), {
-    onSuccess: ({ data: user }) => {
-      setAccessToken(user?.accessToken);
-      setProfileId(user?.id);
-      localStorage.setItem("_access-token", user?.accessToken);
-      localStorage.setItem("_profile-id", user?.id);
-    }
-  });
-
   const authContextData = React.useMemo(
     () => ({
       accessToken,
       profileId,
-      login,
+
+      setAccessToken,
+      setProfileId,
     }),
     [accessToken]
   );
@@ -50,6 +51,33 @@ export function AuthContextProvider({ children }: React.PropsWithChildren) {
 
 export const useAuth = (): {
   accessToken?: string;
+  setAccessToken: (accessToken: string) => void;
   profileId?: string;
-  login?: UseMutationResult<AxiosResponse<any, any>, any, Credentials, any>;
-} => React.useContext(AuthContext);
+  login: UseMutationResult<AxiosResponse<any, any>, any, Credentials, any>;
+} => {
+  const {
+    accessToken,
+    profileId,
+    setAccessToken: setAccessTokenInternal,
+    setProfileId,
+  } = React.useContext<AuthContextProps>(AuthContext);
+  const { axiosSSR } = useAxios();
+
+  const login = useMutation(
+    (credentials: Credentials) => axiosSSR.post("/api/login", credentials),
+    {
+      onSuccess: ({ data: user }) => {
+        setAccessToken(user?.accessToken);
+        setProfileId(user?.id);
+        localStorage.setItem("_profile-id", user?.id);
+      },
+    }
+  );
+
+  const setAccessToken = (accessToken: string) => {
+    setAccessTokenInternal(accessToken);
+    localStorage.setItem("_access-token", accessToken);
+  };
+
+  return { accessToken, setAccessToken, profileId, login };
+};

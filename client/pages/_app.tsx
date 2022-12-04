@@ -10,6 +10,7 @@ import {
   QueryClientProvider,
 } from "react-query";
 import { AuthContextProvider } from "~/contexts/auth-context";
+import { InterceptorContextProvider } from "~/contexts/interceptor-context";
 
 Axios.defaults.baseURL = "http://localhost:8080/api";
 Axios.defaults.withCredentials = true;
@@ -25,7 +26,9 @@ function MyApp({ Component, pageProps }: AppPropsExtended) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <AuthContextProvider>
-          <Component {...pageProps} />
+          <InterceptorContextProvider>
+            <Component {...pageProps} />
+          </InterceptorContextProvider>
         </AuthContextProvider>
       </Hydrate>
     </QueryClientProvider>

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Cookies from "cookies";
-import { apiClient } from "~/api/serverClient";
+import * as Client from "~/api/client";
 
 export const REFRESH_TOKEN_HEADER = "_refresh-token";
 
@@ -9,7 +9,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const cookies: CookiesType = new Cookies(req, res);
 
   try {
-    const req = await apiClient.post("/auth/signin", body);
+    const req = await Client.axiosAPI.post("/auth/signin", body);
     const { data } = req;
     const { refreshToken } = data;
 

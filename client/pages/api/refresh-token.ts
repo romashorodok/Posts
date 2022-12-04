@@ -1,8 +1,7 @@
-import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import Cookies from "cookies";
 import { REFRESH_TOKEN_HEADER } from "./login";
-import { apiClient } from "~/api/serverClient";
+import * as Client from "~/api/client";
 
 /**
  * Refresh access token by refresh token from cookie
@@ -17,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       refreshToken: cookies.get(REFRESH_TOKEN_HEADER),
     };
 
-    const { data } = await apiClient.post("/auth/refreshtoken", payload);
+    const { data } = await Client.axiosAPI.post("/auth/refreshtoken", payload);
 
     delete data["refreshToken"];
 
