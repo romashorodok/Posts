@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,5 +13,5 @@ public class ProfileDTO {
     private String firstName;
     private String lastName;
     private byte[] avatar;
-    private List<RecentPostDTO> posts;
+    private PageDTO<RecentPostDTO> posts;
 }

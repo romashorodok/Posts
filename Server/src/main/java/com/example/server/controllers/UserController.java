@@ -22,8 +22,8 @@ public class UserController {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
     @GetMapping("/profile")
-    public ResponseEntity<List<ProfileDTO>> getAllProfiles()  {
-        return new ResponseEntity<>(userService.getProfilesAll(), HttpStatus.OK);
+    public ResponseEntity<List<ProfileDTO>> getAllProfiles(@RequestParam int size)  {
+        return new ResponseEntity<>(userService.getProfilesAll(size), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -31,8 +31,8 @@ public class UserController {
         return new ResponseEntity<>(userService.getOne(id), HttpStatus.OK);
     }
     @GetMapping("/profile/{id}")
-    public ResponseEntity<ProfileDTO> getProfileById(@PathVariable("id") int id)  {
-        return new ResponseEntity<>(userService.getOneProfileById(id), HttpStatus.OK);
+    public ResponseEntity<ProfileDTO> getProfileById(@PathVariable("id") int id, @RequestParam int size)  {
+        return new ResponseEntity<>(userService.getOneProfileById(id, size), HttpStatus.OK);
     }
     @PostMapping("/")
     public ResponseEntity<UserDTO> saveUser(@RequestPart UserDTO user, @RequestPart MultipartFile file) throws IOException {

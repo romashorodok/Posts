@@ -63,12 +63,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<ProfileDTO> getProfilesAll() {
-        return userRepository.findAll().stream().map(elem -> mapper.toProfileDTO(elem)).collect(Collectors.toList());
+    public List<ProfileDTO> getProfilesAll(int size) {
+        return userRepository.findAll().stream().map(elem -> mapper.toProfileDTO(elem, size)).collect(Collectors.toList());
     }
 
-    public ProfileDTO getOneProfileById(int id){
-        return userRepository.findById(id).map(elem -> mapper.toProfileDTO(elem)
+    public ProfileDTO getOneProfileById(int id, int size){
+        return userRepository.findById(id).map(elem -> mapper.toProfileDTO(elem, size)
         ).orElseThrow(NoSuchElementException::new);
     }
 

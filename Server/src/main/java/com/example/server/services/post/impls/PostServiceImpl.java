@@ -1,5 +1,6 @@
 package com.example.server.services.post.impls;
 
+import com.example.server.dto.PageDTO;
 import com.example.server.dto.PostDTO;
 import com.example.server.dto.RecentPostDTO;
 import com.example.server.dto.ViewPostDTO;
@@ -7,13 +8,16 @@ import com.example.server.mappers.PostMapper;
 import com.example.server.model.Post;
 import com.example.server.repository.PostRepository;
 import com.example.server.services.post.PostService;
+import com.example.server.services.user.impls.UserDetailsImpl;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -111,6 +115,12 @@ public class PostServiceImpl implements PostService {
     public List<PostDTO> getPostByPageListed(int page, int size){
         return repository.findAll(PageRequest.of(page, size)).stream().map(mapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public PageDTO<RecentPostDTO> getPostPageOfAuthorizedUser(int page, int size){
+        Integer userId = ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        Page<Post> allByUserId = repository.findAllByUserId(userId, PageRequest.of(page, size));
+        return new PageDTO<>(allByUserId.getContent().stream().map(mapper::toRecentPostDTO).collect(Collectors.toList()), allByUserId.getTotalElements());
     }
 }
 
