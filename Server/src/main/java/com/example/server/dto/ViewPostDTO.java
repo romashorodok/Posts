@@ -16,7 +16,7 @@ public class ViewPostDTO {
     private Set<TagDTO> tags;
     private List<CommentDTO> comments;
     private String description;
-    private ProfileDTO user;
+    private CommentatorDTO user;
     private Set<LikeDTO> likes;
     private Date createdAt;
     private byte[] image;
