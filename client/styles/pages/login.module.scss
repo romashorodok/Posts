@@ -1,5 +1,6 @@
 @use "~/styles/vars" as var;
 @use "~/styles/mixins" as mixin;
+@use "~/styles/responsive" as responsive;
 
 .login_background {
   position: relative;
@@ -15,13 +16,24 @@
 
 .login_container {
   padding: 16px 16px;
-
   height: 500px;
-  width: 500px;
 
   background: rgba($color: #0b2529, $alpha: 0.6);
 
   border-radius: 10px;
 
   box-shadow: 0 2px 6px 6px rgba(0, 0, 0, 0.4);
+
+  @include responsive.desktop {
+    width: 500px;
+  }
+
+  @include responsive.tablet {
+    width: 500px;
+    // width: 80%;
+  }
+
+  @include responsive.mobile {
+    width: 90%;
+  }
 }
