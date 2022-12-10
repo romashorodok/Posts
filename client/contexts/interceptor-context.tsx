@@ -4,8 +4,8 @@ import axios, {
   RawAxiosRequestHeaders,
 } from "axios";
 import React from "react";
+import { useAuth } from "~/hooks/useAuth";
 import { useAxios } from "~/hooks/useAxios";
-import { useAuth } from "./auth-context";
 
 export function InterceptorContextProvider({
   children,

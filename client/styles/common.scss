@@ -12,6 +12,10 @@
   color: var.$normal;
 }
 
+.fg-second {
+  color: var.$second;
+}
+
 .social_icon {
   filter: invert(100%) sepia(3%) saturate(2%) hue-rotate(332deg)
     brightness(114%) contrast(101%);
