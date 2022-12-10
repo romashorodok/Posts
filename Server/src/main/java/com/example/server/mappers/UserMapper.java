@@ -22,7 +22,7 @@ public interface UserMapper {
     ProfileDTO toProfileDTO(User user);
     @Named("urlToByte")
      static byte[] urlToByte(String url) throws IOException {
-        if(!url.equals("")){
+        if(url != null && !url.equals("")){
             Path path = Paths.get("Server/src/main/resources/images/" + url);
             if(Files.exists(path)){
                 return Base64Utils.decode(Files.readAllBytes(path));

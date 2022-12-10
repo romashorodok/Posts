@@ -8,6 +8,8 @@ type Credentials = {
   password: string;
 };
 
+type RegisterCredentials = Credentials & { firstName: string, lastName: string};
+
 type Authentication = {
   accessToken: string;
   username: string;

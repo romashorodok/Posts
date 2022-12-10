@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,14 +34,28 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     PasswordEncoder encoder;
 
     @Override
-    public UserDTO save(UserDTO user, MultipartFile file) throws IOException {
+    public UserDTO save(UserDTO user, @Nullable MultipartFile file) throws IOException {
+        Optional<User> exists = userRepository.findByEmail(user.getEmail());
+
+        if (exists.isPresent())
+            return null;
+
         if (user.getId() != null) {
             return null;
         }
-        String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-        Files.write(Paths.get("Server/src/main/resources/images/" + filename), file.getBytes());
+
+        if (file != null) {
+            String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+            Path path = Paths.get("Server/src/main/resources/images/".concat(filename));
+
+            Files.createDirectories(path.getParent());
+            Files.write(path, file.getBytes());
+
+            user.setAvatarUrl(filename);
+        }
+
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setAvatarUrl(filename);
+
         return mapper.toDTO(userRepository.save(mapper.toEntity(user)));
     }
 

@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -18,28 +21,40 @@ public class UserController {
     UserServiceImpl userService;
 
     @GetMapping("/")
-    public ResponseEntity<List<UserDTO>> getAllUsers()  {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
+
     @GetMapping("/profile")
-    public ResponseEntity<List<ProfileDTO>> getAllProfiles()  {
+    public ResponseEntity<List<ProfileDTO>> getAllProfiles() {
         return new ResponseEntity<>(userService.getProfilesAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") int id)  {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") int id) {
         return new ResponseEntity<>(userService.getOne(id), HttpStatus.OK);
     }
+
     @GetMapping("/profile/{id}")
-    public ResponseEntity<ProfileDTO> getProfileById(@PathVariable("id") int id)  {
+    public ResponseEntity<ProfileDTO> getProfileById(@PathVariable("id") int id) {
         return new ResponseEntity<>(userService.getOneProfileById(id), HttpStatus.OK);
     }
+
     @PostMapping("/")
-    public ResponseEntity<UserDTO> saveUser(@RequestPart UserDTO user, @RequestPart MultipartFile file) throws IOException {
+    public ResponseEntity<?> saveUser(@RequestPart UserDTO user, @RequestPart(required = false) MultipartFile file) throws IOException {
         UserDTO savedUser = userService.save(user, file);
-        if(savedUser==null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        // TODO: remove it
+        if (savedUser == null) {
+            return ResponseEntity.internalServerError().body(new HashMap<>() {{
+                put("error", new HashMap<>() {{
+                    put("email", new ArrayList<>() {{
+                        add("Email already exists");
+                    }});
+                }});
+            }});
         }
+
         return new ResponseEntity<>(savedUser, HttpStatus.OK);
     }
 

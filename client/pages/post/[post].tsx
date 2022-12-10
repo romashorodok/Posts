@@ -12,20 +12,15 @@ import Styles from "~/Styles/pages/post.module.scss";
 import { prefacePost } from "..";
 import { capitalize } from "~/common/helpers";
 import TagCard from "~/components/post/TagCard";
-import { dehydrate, QueryClient, useQuery } from "react-query";
+import { dehydrate, QueryClient } from "@tanstack/react-query";
 
 interface Props {
   post: Post;
 }
 
-function Index(props) {
-  const { post } = props;
+function Index({ post }: Props) {
   const editor = React.useMemo(() => withReact(createEditor()), []);
   const text = useMemo(() => parseText(post), [post]);
-
-  // const { data: cached } = useQuery(["post"], {
-  //   refetchInterval: 100
-  // });
 
   const prefaceBackground = React.useMemo(
     () =>
@@ -40,11 +35,6 @@ function Index(props) {
       `${capitalize(post?.user.firstName)} ${capitalize(post.user.lastName)}`,
     [post]
   );
-
-  React.useEffect(() => {
-    // console.log(props);
-    // console.log(cached);
-  }, []);
 
   return (
     <LandingLayout>
@@ -91,12 +81,6 @@ export const getServerSideProps: GetServerSideProps<{ post: any }> = async ({
   params,
 }) => {
   const { post: id } = params;
-
-  // await queryClient.fetchQuery(["post"], () => {
-  //   console.log("fetch data");
-
-  //   return axios.get(`/post/${id}`).then((resp) => resp.data);
-  // });
 
   const { data: post } = await axios.get(`/post/${id}`);
 

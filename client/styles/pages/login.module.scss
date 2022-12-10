@@ -16,7 +16,10 @@
 
 .login_container {
   padding: 16px 16px;
-  height: 500px;
+  min-height: 500px;
+  max-height: 80%;
+
+  overflow: auto;
 
   background: rgba($color: #0b2529, $alpha: 0.6);
 

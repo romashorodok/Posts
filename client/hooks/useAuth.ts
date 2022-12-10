@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import React from "react";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import {
   AuthContextProps,
   AuthContext,
@@ -14,6 +14,12 @@ export const useAuth = (): {
   setAccessToken: (accessToken: string) => void;
   profileId?: string;
   login: UseMutationResult<AxiosResponse<any, any>, any, Credentials, any>;
+  register: UseMutationResult<
+    AxiosResponse<any, any>,
+    any,
+    RegisterCredentials,
+    any
+  >;
   logout: UseMutationResult<AxiosResponse<any, any>>;
 } => {
   const {
@@ -33,6 +39,18 @@ export const useAuth = (): {
       },
     }
   );
+
+  const register = useMutation((registerCredentials: RegisterCredentials) => {
+    const payload = new FormData();
+    payload.append(
+      "user",
+      new Blob([JSON.stringify(registerCredentials)], {
+        type: "application/json",
+      })
+    );
+
+    return axios.create().post("/user/", payload);
+  });
 
   const logout = useMutation(() => axiosSSR.post("/api/logout"), {
     onMutate: () => {
@@ -54,5 +72,5 @@ export const useAuth = (): {
     localStorage.setItem(profileIdKey, profileId);
   };
 
-  return { accessToken, setAccessToken, profileId, login, logout };
+  return { accessToken, setAccessToken, profileId, login, register, logout };
 };
