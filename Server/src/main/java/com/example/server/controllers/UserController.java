@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,17 +37,17 @@ public class UserController {
     }
 
     @GetMapping("/profile/{id}")
-    public ResponseEntity<ProfileDTO> getProfileById(@PathVariable("id") int id, @RequestParam int size) {
+    public ResponseEntity<ProfileDTO> getProfileById(@PathVariable("id") int id, @RequestParam(defaultValue = "15") int size) {
         return new ResponseEntity<>(userService.getOneProfileById(id, size), HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<UserDTO> saveUser(@Valid @RequestPart UserDTO user, @RequestPart(required = false) MultipartFile file) throws IOException {
+    public ResponseEntity<?> saveUser(@Valid @RequestPart UserDTO user, @RequestPart(required = false) MultipartFile file) throws IOException {
         UserDTO savedUser = userService.save(user, file);
 
-        // TODO: remove it
+        // TODO: refactor it
         if (savedUser == null) {
-            return ResponseEntity.internalServerError().body(new HashMap<>() {{
+            return ResponseEntity.unprocessableEntity().body(new HashMap<>() {{
                 put("error", new HashMap<>() {{
                     put("email", new ArrayList<>() {{
                         add("Email already exists");
