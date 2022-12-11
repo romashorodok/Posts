@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> saveUser(@RequestPart UserDTO user, @RequestPart(required = false) MultipartFile file) throws IOException {
+    public ResponseEntity<UserDTO> saveUser(@Valid @RequestPart UserDTO user, @RequestPart(required = false) MultipartFile file) throws IOException {
         UserDTO savedUser = userService.save(user, file);
 
         // TODO: remove it
@@ -65,7 +67,7 @@ public class UserController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<UserDTO> updateUser(@RequestPart UserDTO user, @RequestPart(required = false) MultipartFile file) throws IOException {
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestPart UserDTO user, @RequestPart(required = false) MultipartFile file) throws IOException {
         return new ResponseEntity<>(userService.update(user, file), HttpStatus.OK);
     }
 }
