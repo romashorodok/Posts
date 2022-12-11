@@ -9,6 +9,7 @@ import com.example.server.services.user.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,21 +36,29 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private String path;
 
     @Override
-    public UserDTO save(UserDTO user, MultipartFile file) throws IOException {
-        if(user.getId()!=null){
+    public UserDTO save(UserDTO user, @Nullable MultipartFile file) throws IOException {
+        Optional<User> exists = userRepository.findByEmail(user.getEmail());
+
+        if (exists.isPresent()) return null;
+
+        if (user.getId() != null) {
             return null;
         }
-        String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-        Files.write(Paths.get( path + filename), file.getBytes());
+
+        if (file != null) {
+            String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+            Files.write(Paths.get(path + filename), file.getBytes());
+            user.setAvatarUrl(filename);
+        }
+
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setAvatarUrl(filename);
+
         return mapper.toDTO(userRepository.save(mapper.toEntity(user)));
     }
 
     @Override
     public void delete(int id) throws IOException {
-        Files.deleteIfExists(
-                Paths.get(path +  userRepository.findById(id).orElseThrow(NoSuchElementException::new).getAvatarUrl()));
+        Files.deleteIfExists(Paths.get(path + userRepository.findById(id).orElseThrow(NoSuchElementException::new).getAvatarUrl()));
         userRepository.deleteById(id);
     }
 
@@ -67,28 +76,29 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll().stream().map(elem -> mapper.toProfileDTO(elem, size)).collect(Collectors.toList());
     }
 
-    public ProfileDTO getOneProfileById(int id, int size){
-        return userRepository.findById(id).map(elem -> mapper.toProfileDTO(elem, size)
-        ).orElseThrow(NoSuchElementException::new);
+    public ProfileDTO getOneProfileById(int id, int size) {
+        return userRepository.findById(id).map(elem -> mapper.toProfileDTO(elem, size)).orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public UserDTO update(UserDTO user, MultipartFile file) throws IOException {
+    public UserDTO update(UserDTO user, @Nullable MultipartFile file) throws IOException {
         User user1 = userRepository.findById(user.getId()).orElseThrow(NoSuchElementException::new);
-        if(!file.isEmpty()){
-            if(!user1.getAvatarUrl().equals("")){
-                Files.deleteIfExists(
-                    Paths.get(path + user1.getAvatarUrl()));
+
+        User freshEntity = mapper.toEntity(user1, user);
+
+        if (user.getPassword() != null) freshEntity.setPassword(encoder.encode(user.getPassword()));
+
+        if (file != null && !file.isEmpty()) {
+            if (!user1.getAvatarUrl().equals("")) {
+                Files.deleteIfExists(Paths.get(path + user1.getAvatarUrl()));
             }
+
             String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-            Files.write(Paths.get( path + filename), file.getBytes());
+            Files.write(Paths.get(path + filename), file.getBytes());
             user.setAvatarUrl(filename);
         }
-        else{
-            user.setAvatarUrl(user1.getAvatarUrl());
-        }
-        user.setPassword(encoder.encode(user.getPassword()));
-        return mapper.toDTO(userRepository.save(mapper.toEntity(user1, user)));
+
+        return mapper.toDTO(userRepository.save(freshEntity));
     }
 
     @Override
@@ -96,7 +106,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRole().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority("ROLE"+role));
+            authorities.add(new SimpleGrantedAuthority("ROLE" + role));
         });
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }

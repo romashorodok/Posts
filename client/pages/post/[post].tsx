@@ -12,6 +12,7 @@ import Styles from "~/Styles/pages/post.module.scss";
 import { prefacePost } from "..";
 import { capitalize } from "~/common/helpers";
 import TagCard from "~/components/post/TagCard";
+import { dehydrate, QueryClient } from "@tanstack/react-query";
 
 interface Props {
   post: Post;
@@ -56,9 +57,9 @@ function Index({ post }: Props) {
       <section className={`${Styles.post_content}`}>
         <EditorRenderer editor={editor} value={text} readonly={true} />
 
-        <div className="flex column gap-3 flex-wrap">
-          {post.tags.map((tag) => (
-            <TagCard tag={tag} />
+        <div className="flex column gap-3 flex-wrap px-3_5">
+          {post.tags.map((tag, index) => (
+            <TagCard key={index} tag={tag} />
           ))}
         </div>
 
@@ -72,15 +73,23 @@ function Index({ post }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<{ post: Post }> = async ({
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 2000 } },
+});
+
+export const getServerSideProps: GetServerSideProps<{ post: any }> = async ({
   params,
 }) => {
   const { post: id } = params;
+
   const { data: post } = await axios.get(`/post/${id}`);
 
   return {
     props: {
       post,
+      dehydratedState: dehydrate(queryClient, {
+        dehydrateQueries: true,
+      }),
     },
   };
 };

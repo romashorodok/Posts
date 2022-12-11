@@ -2,13 +2,11 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import Styles from "~/Styles/pages/index.module.scss";
 import LandingLayout from "~/layouts/LandingLayout";
-import Card from "~/components/base/Card";
 import axios from "axios";
 import { Node } from "slate";
 import { parseText } from "~/common/editor/transforms";
 import { Post, Tag } from "~/common/post/types";
 import { capitalize } from "~/common/helpers";
-import PostCardStyle from "~/Styles/components/post/PostCard.module.scss";
 import PostCard from "~/components/post/PostCard";
 
 interface Props {
@@ -19,7 +17,7 @@ interface Props {
 
 export function prefacePost(post: Post): string {
   return parseText(post)
-    .slice(0, 10)
+    .slice(0, 3)
     .map((item) => Node.string(item))
     .join(" ");
 }
@@ -81,8 +79,8 @@ export function Home({ posts, tags, featuredPost }: Props) {
         </div>
 
         <div className={`${Styles.landing_post_cards} grid`}>
-          {_posts.map((post: Post) => (
-            <PostCard post={post} />
+          {_posts.map((post: Post, index) => (
+            <PostCard key={index} post={post} />
           ))}
         </div>
       </section>
