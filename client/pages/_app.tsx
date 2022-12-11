@@ -8,7 +8,7 @@ import {
   Hydrate,
   QueryClient,
   QueryClientProvider,
-} from "react-query";
+} from "@tanstack/react-query";
 import { AuthContextProvider } from "~/contexts/auth-context";
 import { InterceptorContextProvider } from "~/contexts/interceptor-context";
 
