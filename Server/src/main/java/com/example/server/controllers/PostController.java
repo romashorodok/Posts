@@ -1,5 +1,6 @@
 package com.example.server.controllers;
 
+import com.example.server.dto.PageDTO;
 import com.example.server.dto.PostDTO;
 import com.example.server.dto.RecentPostDTO;
 import com.example.server.dto.ViewPostDTO;
@@ -79,4 +80,9 @@ public class PostController {
     public ResponseEntity<List<PostDTO>> getPageableAsList( @RequestParam Integer page, @RequestParam Integer size){
         return new ResponseEntity<>(postService.getPostByPageListed(page, size), HttpStatus.OK);
     }
+        @GetMapping("/authorized-user/paging")
+    public ResponseEntity<PageDTO<RecentPostDTO>> getPostPage(@RequestParam int page, @RequestParam int size){
+        return new ResponseEntity<>(postService.getPostPageOfAuthorizedUser(page, size), HttpStatus.OK);
+    }
+
 }

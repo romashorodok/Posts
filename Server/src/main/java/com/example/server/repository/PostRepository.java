@@ -1,6 +1,7 @@
 package com.example.server.repository;
 
 import com.example.server.model.Post;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,5 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> sortByLikes();
     @Query("select distinct p from Post p left join p.tags tags where (:tag='all' or tags.name = :tag)")
     List<Post> findByTag(String tag);
+    Page<Post> findAllByUserId(int id, Pageable pageable);
 }

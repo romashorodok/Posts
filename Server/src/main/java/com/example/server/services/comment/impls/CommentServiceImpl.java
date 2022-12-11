@@ -7,6 +7,7 @@ import com.example.server.model.Comment;
 import com.example.server.repository.CommentRepository;
 import com.example.server.services.comment.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -31,6 +32,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @PreAuthorize("@authComponent.hasPermissionComment(#id) or hasRole('ROLE_Admin')")
     public void delete(int id) {
         repository.deleteById(id);
     }
@@ -46,6 +48,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @PreAuthorize("@authComponent.hasPermissionComment(#id) or hasRole('ROLE_Admin')")
     public CommentSaveDTO update(CommentSaveDTO comment) {
         Comment comment1 = repository.findById(comment.getId()).orElseThrow(NoSuchElementException::new);
         comment.setCreatedAt(comment1.getCreatedAt());

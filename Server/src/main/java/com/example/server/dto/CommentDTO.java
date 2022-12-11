@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class CommentDTO {
     private Integer id;
-    private ProfileDTO user;
+    private CommentatorDTO user;
     private String content;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date createdAt;

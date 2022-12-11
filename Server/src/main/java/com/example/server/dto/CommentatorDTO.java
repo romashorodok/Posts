@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProfileDTO {
+public class CommentatorDTO {
     private Integer id;
     private String email;
     private String firstName;
     private String lastName;
     private byte[] avatar;
-    private PageDTO<RecentPostDTO> posts;
 }
