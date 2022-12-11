@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getOneProfileById(id, size), HttpStatus.OK);
     }
     @PostMapping("/")
-    public ResponseEntity<UserDTO> saveUser(@RequestPart UserDTO user, @RequestPart MultipartFile file) throws IOException {
+    public ResponseEntity<UserDTO> saveUser(@Valid @RequestPart UserDTO user, @RequestPart MultipartFile file) throws IOException {
         UserDTO savedUser = userService.save(user, file);
         if(savedUser==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -50,7 +51,7 @@ public class UserController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<UserDTO> updateUser(@RequestPart UserDTO user, @RequestPart MultipartFile file) throws IOException {
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestPart UserDTO user, @RequestPart MultipartFile file) throws IOException {
         return new ResponseEntity<>(userService.update(user, file), HttpStatus.OK);
     }
 }
