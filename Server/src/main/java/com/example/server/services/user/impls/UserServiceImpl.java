@@ -8,8 +8,8 @@ import com.example.server.repository.UserRepository;
 import com.example.server.services.user.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,8 +39,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDTO save(UserDTO user, @Nullable MultipartFile file) throws IOException {
         Optional<User> exists = userRepository.findByEmail(user.getEmail());
 
-        if (exists.isPresent())
-            return null;
+        if (exists.isPresent()) return null;
 
         if (user.getId() != null) {
             return null;
@@ -49,11 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         if (file != null) {
             String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-            Path path = Paths.get(path.concat(filename));
-
-            Files.createDirectories(path.getParent());
-            Files.write(path, file.getBytes());
-
+            Files.write(Paths.get(path + filename), file.getBytes());
             user.setAvatarUrl(filename);
         }
 
@@ -64,8 +58,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void delete(int id) throws IOException {
-        Files.deleteIfExists(
-                Paths.get(path +  userRepository.findById(id).orElseThrow(NoSuchElementException::new).getAvatarUrl()));
+        Files.deleteIfExists(Paths.get(path + userRepository.findById(id).orElseThrow(NoSuchElementException::new).getAvatarUrl()));
         userRepository.deleteById(id);
     }
 
@@ -83,7 +76,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll().stream().map(elem -> mapper.toProfileDTO(elem, size)).collect(Collectors.toList());
     }
 
-    public ProfileDTO getOneProfileById(int id, int size){
+    public ProfileDTO getOneProfileById(int id, int size) {
         return userRepository.findById(id).map(elem -> mapper.toProfileDTO(elem, size)).orElseThrow(NoSuchElementException::new);
     }
 
@@ -93,17 +86,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         User freshEntity = mapper.toEntity(user1, user);
 
-        if (user.getPassword() != null)
-            freshEntity.setPassword(encoder.encode(user.getPassword()));
-            
-        if(file != null && !file.isEmpty()){
-            if(!user1.getAvatarUrl().equals("")){
-                Files.deleteIfExists(
-                    Paths.get(path + user1.getAvatarUrl()));
+        if (user.getPassword() != null) freshEntity.setPassword(encoder.encode(user.getPassword()));
+
+        if (file != null && !file.isEmpty()) {
+            if (!user1.getAvatarUrl().equals("")) {
+                Files.deleteIfExists(Paths.get(path + user1.getAvatarUrl()));
             }
-            
+
             String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-            Files.write(Paths.get( path + filename), file.getBytes());
+            Files.write(Paths.get(path + filename), file.getBytes());
             user.setAvatarUrl(filename);
         }
 
