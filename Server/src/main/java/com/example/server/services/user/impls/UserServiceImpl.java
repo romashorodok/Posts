@@ -85,17 +85,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user1 = userRepository.findById(user.getId()).orElseThrow(NoSuchElementException::new);
 
         User freshEntity = mapper.toEntity(user1, user);
-
         if (user.getPassword() != null) freshEntity.setPassword(encoder.encode(user.getPassword()));
 
         if (file != null && !file.isEmpty()) {
-            if (!user1.getAvatarUrl().equals("")) {
-                Files.deleteIfExists(Paths.get(path + user1.getAvatarUrl()));
+            if(!(user1.getAvatarUrl() == null)  ) {
+                if (!user1.getAvatarUrl().equals("")) {
+                    Files.deleteIfExists(Paths.get(path + user1.getAvatarUrl()));
+                }
             }
-
             String filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
             Files.write(Paths.get(path + filename), file.getBytes());
-            user.setAvatarUrl(filename);
+            freshEntity.setAvatarUrl(filename);
         }
 
         return mapper.toDTO(userRepository.save(freshEntity));

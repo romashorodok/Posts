@@ -19,11 +19,9 @@ function putText(post: Post, text: Descendant[], file) {
     description: JSON.stringify(text),
   });
 
-  console.log(typeof file);
 
   const payload = new FormData();
   payload.append("post", new Blob([postJson], { type: "application/json" }));
-  payload.append("file", new Blob([file], { type: "image/*" }));
 
   if (post.id) axios.put("/post/", payload).catch(console.error);
 }
