@@ -8,7 +8,7 @@ export const links: Array<Link> = [
   { name: "Головна", path: "/" },
   { name: "Статті", path: "" },
   { name: "Контакти", path: "" },
-  { name: "Профіль", path: "" },
+  { name: "Профіль", path: "/profile" },
 ];
 
 export const socialLinks: Array<Link> = [

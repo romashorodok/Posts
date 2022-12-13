@@ -13,29 +13,25 @@ import EditorRenderer from "~/components/editor/EditorRenderer";
 import ToolBarButtons from "~/components/editor/ToolBarButtons";
 import { parseText } from "~/common/editor/transforms";
 
-function putText(post: Post, text: Descendant[], file) {
+function putText(post: Post, text: Descendant[]) {
   const postJson = JSON.stringify({
     ...post,
     description: JSON.stringify(text),
   });
-
-  console.log(typeof file);
-
   const payload = new FormData();
   payload.append("post", new Blob([postJson], { type: "application/json" }));
-  payload.append("file", new Blob([file], { type: "image/*" }));
 
   if (post.id) axios.put("/post/", payload).catch(console.error);
 }
 
-function Index({ post, file }: { post: Post; file }) {
+function Index({ post }: { post: Post }) {
   const [element, setElement] = useState<CustomElement>();
   const [leaf, setLeaf] = useState<CustomText>();
 
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const text = useMemo<Descendant[]>(() => parseText(post), [post]);
 
-  const onChangeText = (text: Descendant[]) => putText(post, text, file);
+  const onChangeText = (text: Descendant[]) => putText(post, text);
 
   const onCursorChange = () => {
     React.useEffect(() => {
@@ -80,7 +76,6 @@ export const getServerSideProps: GetServerSideProps<{ post: Post }> = async ({
   return {
     props: {
       post,
-      file: post?.image
     },
   };
 };

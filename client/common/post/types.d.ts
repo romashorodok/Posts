@@ -13,3 +13,14 @@ export type Post = {
   user?: any;
   tags?: Array<Tag>;
 };
+
+export type Profile = {
+  firstName: string;
+  lastName: string;
+  email: string;
+
+  posts: {
+    content: Array<Post>;
+    totalElements: number;
+  }
+}
