@@ -18,6 +18,9 @@ function putText(post: Post, text: Descendant[], file) {
     ...post,
     description: JSON.stringify(text),
   });
+
+  console.log(typeof file);
+
   const payload = new FormData();
   payload.append("post", new Blob([postJson], { type: "application/json" }));
   payload.append("file", new Blob([file], { type: "image/*" }));
@@ -74,20 +77,10 @@ export const getServerSideProps: GetServerSideProps<{ post: Post }> = async ({
   const { post: id } = params;
   const { data: post } = await axios.get(`/post/${id}`);
 
-  const fs = require("fs");
-  const path = require("path");
-
-  const filePath = path.resolve(
-    __dirname,
-    "../../../../public/assets/photo_2022-10-12_12-21-08.jpg"
-  );
-
-  const file = fs.readFileSync(filePath, { encoding: "base64" });
-
   return {
     props: {
       post,
-      file
+      file: post?.image
     },
   };
 };
