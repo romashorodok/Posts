@@ -14,10 +14,13 @@ function Index() {
   React.useEffect(() => {
     if (profileId)
       profileQuery.refetch();
+    else 
+      profileQuery.remove();
 
   }, [profileId]);
 
-  if (profileQuery.isLoading)
+
+  if (profileQuery.isLoading || profileQuery.error)
     return null;
 
   return (

@@ -60,8 +60,9 @@ export function Header({
             </NextLink>
           ))}
         </section>
-        <section>
+        <section className={Styles.m_section_child_3}>
           <NextLink href={"/login"}>Вхід</NextLink>
+          <NextLink href={"/register"}>Реєстрація</NextLink>
         </section>
       </div>
     </header>
