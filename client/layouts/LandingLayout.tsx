@@ -8,14 +8,14 @@ export const links: Array<Link> = [
   { name: "Головна", path: "/" },
   { name: "Статті", path: "" },
   { name: "Контакти", path: "" },
-  { name: "Профіль", path: "" },
+  { name: "Профіль", path: "/profile" },
 ];
 
 export const socialLinks: Array<Link> = [
   { icon: "/assets/facebook.svg", path: "Facebook" },
   { icon: "/assets/twitter.svg", path: "Twitter" },
-  { icon: "/assets/facebook.svg", path: "Youtube" },
-  { icon: "/assets/twitter.svg", path: "Pinterest" },
+  { icon: "/assets/youtube.svg", path: "Youtube" },
+  { icon: "/assets/pinterest.svg", path: "Pinterest" },
 ];
 
 export function LandingLayout({
