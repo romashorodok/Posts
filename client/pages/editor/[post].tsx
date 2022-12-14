@@ -33,7 +33,7 @@ function Index({ post }: { post: Post }) {
 
   const onChangeText = (text: Descendant[]) => putText(post, text);
 
-  const onCursorChange = () => {
+  const OnCursorChange = () => {
     React.useEffect(() => {
       const elements: CustomElement[] = editor.children;
 
@@ -59,7 +59,7 @@ function Index({ post }: { post: Post }) {
           value={text}
           onChange={onChangeText}
           onKeyDown={handleKeyDown}
-          sideEffect={onCursorChange}
+          sideEffect={OnCursorChange}
           toolbar={<ToolBarButtons element={element} leaf={leaf} />}
         />
       </div>
