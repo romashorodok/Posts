@@ -13,6 +13,7 @@ import EditorRenderer from "~/components/editor/EditorRenderer";
 import ToolBarButtons from "~/components/editor/ToolBarButtons";
 import { parseText } from "~/common/editor/transforms";
 
+
 function putText(post: Post, text: Descendant[]) {
   const postJson = JSON.stringify({
     ...post,
